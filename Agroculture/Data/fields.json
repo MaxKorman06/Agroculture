@@ -1,0 +1,33 @@
+﻿[
+  {
+    "ID": 1,
+    "Name": "Поле 1",
+    "Area": 10.0,
+    "SelectedSoil": {
+      "ID": 1,
+      "Name": "Чорнозем",
+      "DefaultN": 40.0,
+      "DefaultP2O5": 25.0,
+      "DefaultK2O": 30.0
+    },
+    "CurrentN": 40.0,
+    "CurrentP2O5": 25.0,
+    "CurrentK2O": 30.0,
+    "CurrentCrop": {
+      "ID": 1,
+      "Name": "Пшениця",
+      "RequiredN": 120.0,
+      "RequiredP2O5": 60.0,
+      "RequiredK2O": 40.0,
+      "RecomendedNextCrop": "Ячмінь"
+    },
+    "PastCrop": {
+      "ID": 2,
+      "Name": "Кукурудза",
+      "RequiredN": 150.0,
+      "RequiredP2O5": 70.0,
+      "RequiredK2O": 50.0,
+      "RecomendedNextCrop": "Соя"
+    }
+  }
+]

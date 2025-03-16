@@ -1,0 +1,16 @@
+﻿[
+  {
+    "ID": 1,
+    "Name": "Чорнозем",
+    "DefaultN": 40.0,
+    "DefaultP2O5": 25.0,
+    "DefaultK2O": 30.0
+  },
+  {
+    "ID": 2,
+    "Name": "Сірозем",
+    "DefaultN": 20.0,
+    "DefaultP2O5": 15.0,
+    "DefaultK2O": 20.0
+  }
+]

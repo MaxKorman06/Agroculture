@@ -1,0 +1,18 @@
+﻿[
+  {
+    "ID": 1,
+    "Name": "Пшениця",
+    "RequiredN": 120.0,
+    "RequiredP2O5": 60.0,
+    "RequiredK2O": 40.0,
+    "RecomendedNextCrop": "Ячмінь"
+  },
+  {
+    "ID": 2,
+    "Name": "Кукурудза",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  }
+]
