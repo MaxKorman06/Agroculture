@@ -2,6 +2,7 @@
 using Agroculture.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,10 +25,13 @@ namespace Agroculture
         private List<Crop> crops;
         private JsonDataService dataService;
 
-        // Шляхи до файлів JSON (розмістіть їх у папці Data у корені проєкту)
+        // Шляхи до файлів JSON (розміщені в папці Data)
         private string soilsFilePath = "Data/soils.json";
         private string cropsFilePath = "Data/crops.json";
         private string fieldsFilePath = "Data/fields.json";
+
+        // Лічильник років для вибраного поля
+        private int currentYear = 0;
 
         public MainWindow()
         {
@@ -51,17 +55,28 @@ namespace Agroculture
             FieldsListBox.ItemsSource = fields;
         }
 
+        private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SoilComboBox.SelectedItem is Soil selectedSoil)
+            {
+                CurrentNTextBox.Text = selectedSoil.DefaultN.ToString();
+                CurrentP2O5TextBox.Text = selectedSoil.DefaultP2O5.ToString();
+                CurrentK2OTextBox.Text = selectedSoil.DefaultK2O.ToString();
+            }
+            // Автоматичне збереження змін після вибору типу ґрунту
+            UpdateSelectedField();
+        }
         private void FieldsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FieldsListBox.SelectedItem is Field selectedField)
             {
+                // Оновлення UI при виборі поля
                 FieldNameTextBox.Text = selectedField.Name;
-                FieldAreaTextBox.Text = selectedField.Area.ToString();
-                // Прив'язуємо обраний тип ґрунту за ID
+                FieldAreaTextBox.Text = selectedField.Area.ToString(CultureInfo.InvariantCulture);
                 SoilComboBox.SelectedItem = soils.Find(s => s.ID == selectedField.SelectedSoil?.ID);
-                CurrentNTextBox.Text = selectedField.CurrentN.ToString();
-                CurrentP2O5TextBox.Text = selectedField.CurrentP2O5.ToString();
-                CurrentK2OTextBox.Text = selectedField.CurrentK2O.ToString();
+                CurrentNTextBox.Text = selectedField.CurrentN.ToString(CultureInfo.InvariantCulture);
+                CurrentP2O5TextBox.Text = selectedField.CurrentP2O5.ToString(CultureInfo.InvariantCulture);
+                CurrentK2OTextBox.Text = selectedField.CurrentK2O.ToString(CultureInfo.InvariantCulture);
                 CurrentCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.CurrentCrop?.ID);
                 PastCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.PastCrop?.ID);
             }
@@ -82,6 +97,7 @@ namespace Agroculture
                 PastCrop = null
             };
             fields.Add(newField);
+            dataService.SaveFields(fields);
             RefreshFieldsList();
         }
 
@@ -90,54 +106,104 @@ namespace Agroculture
             if (FieldsListBox.SelectedItem is Field selectedField)
             {
                 fields.Remove(selectedField);
+                dataService.SaveFields(fields);
                 RefreshFieldsList();
             }
         }
 
-        private void RefreshFieldsList()
+        private void NextYear_Click(object sender, RoutedEventArgs e)
         {
-            FieldsListBox.ItemsSource = null;
-            FieldsListBox.ItemsSource = fields;
-            dataService.SaveFields(fields);
+            if (FieldsListBox.SelectedItem is Field selectedField)
+            {
+                if (selectedField.CurrentCrop == null)
+                {
+                    MessageBox.Show("Будь ласка, оберіть поточну культуру перед переходом до наступного року.");
+                    return;
+                }
+
+                // Автоматично встановлюємо минулу культуру рівною поточній
+                selectedField.PastCrop = selectedField.CurrentCrop;
+                currentYear++;
+                YearCounterTextBlock.Text = $"Рік: {currentYear}";
+                PastCropComboBox.IsEnabled = currentYear == 0;
+
+                // Очищення поточної культури для нового року
+                selectedField.CurrentCrop = null;
+                CurrentCropComboBox.SelectedItem = null;
+
+                dataService.SaveFields(fields);
+                RefreshFieldsList();
+            }
+            else
+            {
+                MessageBox.Show("Будь ласка, оберіть поле.");
+            }
         }
 
-        private void SaveField_Click(object sender, RoutedEventArgs e)
+        private void Calculate_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Розрахунок виконано (демонстраційний варіант)");
+        }
+
+        /// <summary>
+        /// Оновлює властивості вибраного поля з даних, введених у форму,
+        /// і автоматично зберігає зміни у файл fields.json.
+        /// Викликається при зміні даних (події LostFocus та SelectionChanged).
+        /// </summary>
+        private void UpdateSelectedField()
         {
             if (FieldsListBox.SelectedItem is Field selectedField)
             {
                 selectedField.Name = FieldNameTextBox.Text;
-                if (double.TryParse(FieldAreaTextBox.Text, out double area))
+
+                if (double.TryParse(FieldAreaTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double area))
                     selectedField.Area = area;
+
                 selectedField.SelectedSoil = SoilComboBox.SelectedItem as Soil;
-                if (double.TryParse(CurrentNTextBox.Text, out double n))
+
+                if (double.TryParse(CurrentNTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double n))
                     selectedField.CurrentN = n;
-                if (double.TryParse(CurrentP2O5TextBox.Text, out double p))
+
+                if (double.TryParse(CurrentP2O5TextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double p))
                     selectedField.CurrentP2O5 = p;
-                if (double.TryParse(CurrentK2OTextBox.Text, out double k))
+
+                if (double.TryParse(CurrentK2OTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double k))
                     selectedField.CurrentK2O = k;
+
                 selectedField.CurrentCrop = CurrentCropComboBox.SelectedItem as Crop;
-                selectedField.PastCrop = PastCropComboBox.SelectedItem as Crop;
+
+                // Якщо рік 0, користувач може вибирати минулу культуру вручну
+                if (currentYear == 0)
+                    selectedField.PastCrop = PastCropComboBox.SelectedItem as Crop;
 
                 dataService.SaveFields(fields);
                 RefreshFieldsList();
             }
         }
 
-        private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Подія для LostFocus у текстових полях.
+        /// </summary>
+        private void FieldDetails_LostFocus(object sender, RoutedEventArgs e)
         {
-            // При зміні типу ґрунту скидаємо поточні значення поживних речовин до стандартних
-            if (SoilComboBox.SelectedItem is Soil selectedSoil)
-            {
-                CurrentNTextBox.Text = selectedSoil.DefaultN.ToString();
-                CurrentP2O5TextBox.Text = selectedSoil.DefaultP2O5.ToString();
-                CurrentK2OTextBox.Text = selectedSoil.DefaultK2O.ToString();
-            }
+            UpdateSelectedField();
         }
 
-        private void Calculate_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Подія для SelectionChanged у ComboBox'ах.
+        /// </summary>
+        private void FieldDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Тут буде виклик алгоритму розрахунку потреби в добривах.
-            MessageBox.Show("Розрахунок виконано (демонстраційний варіант)");
+            UpdateSelectedField();
+        }
+
+        /// <summary>
+        /// Оновлює прив'язку списку полів (для відображення змін) і зберігає дані.
+        /// </summary>
+        private void RefreshFieldsList()
+        {
+            FieldsListBox.ItemsSource = null;
+            FieldsListBox.ItemsSource = fields;
         }
     }
 }

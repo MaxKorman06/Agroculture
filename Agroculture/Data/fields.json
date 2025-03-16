@@ -4,11 +4,11 @@
     "Name": "Поле 1",
     "Area": 10.0,
     "SelectedSoil": {
-      "ID": 1,
-      "Name": "Чорнозем",
-      "DefaultN": 40.0,
-      "DefaultP2O5": 25.0,
-      "DefaultK2O": 30.0
+      "ID": 4,
+      "Name": "Чорнозем опідзолений пилувато-суглинковий на лесі",
+      "DefaultN": 117,
+      "DefaultP2O5": 97,
+      "DefaultK2O": 110
     },
     "CurrentN": 40.0,
     "CurrentP2O5": 25.0,

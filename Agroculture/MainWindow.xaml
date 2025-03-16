@@ -24,51 +24,58 @@
 
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Назва:" Width="100"/>
-                <TextBox x:Name="FieldNameTextBox" Width="200"/>
+                <TextBox x:Name="FieldNameTextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Площа (га):" Width="100"/>
-                <TextBox x:Name="FieldAreaTextBox" Width="200"/>
+                <TextBox x:Name="FieldAreaTextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Тип ґрунту:" Width="100"/>
-                <ComboBox x:Name="SoilComboBox" Width="200" SelectionChanged="SoilComboBox_SelectionChanged"/>
+                <ComboBox x:Name="SoilComboBox" Width="200" 
+                          SelectionChanged="SoilComboBox_SelectionChanged" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
             <!-- Значення поживних речовин -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="N:" Width="100"/>
-                <TextBox x:Name="CurrentNTextBox" Width="200"/>
+                <TextBox x:Name="CurrentNTextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="P₂O₅:" Width="100"/>
-                <TextBox x:Name="CurrentP2O5TextBox" Width="200"/>
+                <TextBox x:Name="CurrentP2O5TextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="K₂O:" Width="100"/>
-                <TextBox x:Name="CurrentK2OTextBox" Width="200"/>
+                <TextBox x:Name="CurrentK2OTextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
             <!-- Культури -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Поточна культура:" Width="100"/>
-                <ComboBox x:Name="CurrentCropComboBox" Width="200" DisplayMemberPath="Name"/>
+                <ComboBox x:Name="CurrentCropComboBox" Width="200" 
+                          DisplayMemberPath="Name" SelectionChanged="FieldDetails_SelectionChanged"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Минула культура:" Width="100"/>
-                <ComboBox x:Name="PastCropComboBox" Width="200" DisplayMemberPath="Name"/>
+                <!-- Для року 0 можна вибирати вручну, для >0 - блокується -->
+                <ComboBox x:Name="PastCropComboBox" Width="200" 
+                          DisplayMemberPath="Name" SelectionChanged="FieldDetails_SelectionChanged"/>
             </StackPanel>
 
             <!-- Кнопки -->
             <StackPanel Orientation="Horizontal" Margin="10">
-                <Button Content="Зберегти" Width="100" Click="SaveField_Click"/>
-                <Button Content="Розрахувати" Width="100" Margin="10,0,0,0" Click="Calculate_Click"/>
+                <!-- Кнопку "Зберегти" видаляємо -->
+                <Button Content="Розрахувати" Width="100" Margin="0,0,10,0" Click="Calculate_Click"/>
+                <Button Content="Наступний рік" Width="100" Click="NextYear_Click"/>
             </StackPanel>
+            <!-- Лічильник років -->
+            <TextBlock x:Name="YearCounterTextBlock" Text="Рік: 0" FontWeight="Bold" Margin="10"/>
         </StackPanel>
     </Grid>
 </Window>

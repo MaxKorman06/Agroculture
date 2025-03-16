@@ -1,7 +1,7 @@
 ﻿[
   {
     "ID": 1,
-    "Name": "Пшениця",
+    "Name": "Пшениця озима",
     "RequiredN": 120.0,
     "RequiredP2O5": 60.0,
     "RequiredK2O": 40.0,
@@ -9,7 +9,87 @@
   },
   {
     "ID": 2,
+    "Name": "Пшениця яра",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 3,
+    "Name": "Жито озиме",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 4,
+    "Name": "Ячмінь",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 5,
+    "Name": "Овес",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 6,
+    "Name": "Просо",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 7,
     "Name": "Кукурудза",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 8,
+    "Name": "Рис",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 9,
+    "Name": "Гречка",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 10,
+    "Name": "Горох",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 11,
+    "Name": "Соя",
+    "RequiredN": 150.0,
+    "RequiredP2O5": 70.0,
+    "RequiredK2O": 50.0,
+    "RecomendedNextCrop": "Соя"
+  },
+  {
+    "ID": 12,
+    "Name": "Соняшник",
     "RequiredN": 150.0,
     "RequiredP2O5": 70.0,
     "RequiredK2O": 50.0,
