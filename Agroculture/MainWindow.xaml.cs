@@ -53,12 +53,19 @@ namespace Agroculture
 
             // Прив'язка списку полів
             FieldsListBox.ItemsSource = fields;
+
+            // Якщо поля існують, автоматично вибираємо перше
+            if (fields.Count > 0)
+            {
+                FieldsListBox.SelectedIndex = 0;
+            }
         }
 
         private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SoilComboBox.SelectedItem is Soil selectedSoil)
             {
+
                 CurrentNTextBox.Text = selectedSoil.DefaultN.ToString();
                 CurrentP2O5TextBox.Text = selectedSoil.DefaultP2O5.ToString();
                 CurrentK2OTextBox.Text = selectedSoil.DefaultK2O.ToString();
@@ -202,8 +209,22 @@ namespace Agroculture
         /// </summary>
         private void RefreshFieldsList()
         {
+            // Зберігаємо поточний вибір, якщо він існує
+            var selectedField = FieldsListBox.SelectedItem as Field;
+
             FieldsListBox.ItemsSource = null;
             FieldsListBox.ItemsSource = fields;
+
+            // Якщо попереднє поле було вибраним, пробуємо його знову встановити
+            if (selectedField != null && fields.Exists(f => f.ID == selectedField.ID))
+            {
+                FieldsListBox.SelectedItem = fields.Find(f => f.ID == selectedField.ID);
+            }
+            else if (fields.Count > 0)
+            {
+                // Якщо вибраного поля немає, вибираємо перше
+                FieldsListBox.SelectedIndex = 0;
+            }
         }
     }
 }
