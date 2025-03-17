@@ -86,9 +86,14 @@ namespace Agroculture
                 CurrentP2O5TextBox.Text = selectedField.CurrentP2O5.ToString(CultureInfo.InvariantCulture);
                 CurrentK2OTextBox.Text = selectedField.CurrentK2O.ToString(CultureInfo.InvariantCulture);
                 CurrentCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.CurrentCrop?.ID);
+
+                // Виправлення проблеми з PastCropComboBox
                 PastCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.PastCrop?.ID);
+
+                PastCropComboBox.IsEnabled = currentYear == 0; // Блокуємо, якщо рік більше 0
             }
         }
+
 
         private void AddField_Click(object sender, RoutedEventArgs e)
         {
@@ -105,27 +110,25 @@ namespace Agroculture
                 PastCrop = null
             };
             fields.Add(newField);
-            if (FieldsListBox.SelectedItem is Field selectedField)
-            {
-                dataService.SaveField(selectedField);
-            }
+            // При створенні нового поля зберігаємо його окремо у saves/ через SaveField
+            dataService.SaveField(newField);
             RefreshFieldsList();
         }
+
 
         private void DeleteField_Click(object sender, RoutedEventArgs e)
         {
             if (FieldsListBox.SelectedItem is Field selectedField)
             {
-                // Видаляємо JSON-файл для цього поля
+                // Видаляємо JSON-файл для цього поля з saves/
                 dataService.DeleteField(selectedField.ID);
 
                 // Видаляємо поле з колекції
                 fields.Remove(selectedField);
-
-                // Оновлюємо UI
                 RefreshFieldsList();
             }
         }
+
 
         private void NextYear_Click(object sender, RoutedEventArgs e)
         {
@@ -137,7 +140,7 @@ namespace Agroculture
                     return;
                 }
 
-                // Автоматично встановлюємо минулу культуру рівною поточній
+                // Оновлюємо минулу культуру
                 selectedField.PastCrop = selectedField.CurrentCrop;
                 currentYear++;
                 YearCounterTextBlock.Text = $"Рік: {currentYear}";
@@ -147,10 +150,11 @@ namespace Agroculture
                 selectedField.CurrentCrop = null;
                 CurrentCropComboBox.SelectedItem = null;
 
-                if (FieldsListBox.SelectedItem is Field selectedField1)
-                {
-                    dataService.SaveField(selectedField1);
-                }
+                // Оновлення списку культур
+                PastCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.PastCrop?.ID);
+
+                // Збереження змін
+                dataService.SaveField(selectedField);
                 RefreshFieldsList();
             }
             else
@@ -158,6 +162,8 @@ namespace Agroculture
                 MessageBox.Show("Будь ласка, оберіть поле.");
             }
         }
+
+
 
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
@@ -189,19 +195,39 @@ namespace Agroculture
                 if (double.TryParse(CurrentK2OTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double k))
                     selectedField.CurrentK2O = k;
 
-                selectedField.CurrentCrop = CurrentCropComboBox.SelectedItem as Crop;
+                // Оновлюємо поточну культуру тільки якщо щось вибрано
+                if (CurrentCropComboBox.SelectedItem != null)
+                    selectedField.CurrentCrop = CurrentCropComboBox.SelectedItem as Crop;
 
-                // Якщо рік 0, користувач може вибирати минулу культуру вручну
-                if (currentYear == 0)
+                // Для року 0 дозволяємо ручне задання минулої культури
+                if (currentYear == 0 && PastCropComboBox.SelectedItem != null)
                     selectedField.PastCrop = PastCropComboBox.SelectedItem as Crop;
 
-                if (FieldsListBox.SelectedItem is Field selectedField1)
-                {
-                    dataService.SaveField(selectedField1);
-                }
+                dataService.SaveField(selectedField);
                 RefreshFieldsList();
             }
         }
+
+
+
+        private void CurrentCropComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            // Якщо користувач обрав культуру, оновлюємо поле
+            if (CurrentCropComboBox.SelectedItem != null)
+            {
+                UpdateSelectedField();
+            }
+        }
+
+        private void PastCropComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            // Для року 0 – дозволено ручне задання минулої культури
+            if (PastCropComboBox.SelectedItem != null && currentYear == 0)
+            {
+                UpdateSelectedField();
+            }
+        }
+
 
         /// <summary>
         /// Подія для LostFocus у текстових полях.
@@ -224,22 +250,16 @@ namespace Agroculture
         /// </summary>
         private void RefreshFieldsList()
         {
-            // Зберігаємо поточний вибір, якщо він існує
             var selectedField = FieldsListBox.SelectedItem as Field;
 
             FieldsListBox.ItemsSource = null;
             FieldsListBox.ItemsSource = fields;
 
-            // Якщо попереднє поле було вибраним, пробуємо його знову встановити
-            if (selectedField != null && fields.Exists(f => f.ID == selectedField.ID))
+            if (selectedField != null)
             {
-                FieldsListBox.SelectedItem = fields.Find(f => f.ID == selectedField.ID);
-            }
-            else if (fields.Count > 0)
-            {
-                // Якщо вибраного поля немає, вибираємо перше
-                FieldsListBox.SelectedIndex = 0;
+                FieldsListBox.SelectedItem = fields.FirstOrDefault(f => f.ID == selectedField.ID);
             }
         }
+
     }
 }
