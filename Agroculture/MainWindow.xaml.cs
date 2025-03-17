@@ -29,21 +29,21 @@ namespace Agroculture
         }
 
         private void LoadData()
-        {
-            soils = dataService.LoadSoils();
-            crops = dataService.LoadCrops();
-            fields = dataService.LoadFields(); // Завантаження збережених значень
+{
+    soils = dataService.LoadSoils();
+    crops = dataService.LoadCrops();
+    fields = dataService.LoadFields(); // Завантаження збережених значень
 
-            SoilComboBox.ItemsSource = soils;
-            CurrentCropComboBox.ItemsSource = crops;
-            PastCropComboBox.ItemsSource = crops;
-            FieldsListBox.ItemsSource = fields;
+    SoilComboBox.ItemsSource = soils;
+    CurrentCropComboBox.ItemsSource = crops;
+    PastCropComboBox.ItemsSource = crops;
+    FieldsListBox.ItemsSource = fields;
 
-            if (fields.Count > 0)
-            {
-                FieldsListBox.SelectedIndex = 0;
-            }
-        }
+    if (fields.Count > 0)
+    {
+        FieldsListBox.SelectedIndex = 0;
+    }
+}
 
 
         private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -64,7 +64,23 @@ namespace Agroculture
                 UpdateSelectedField();
             }
         }
+        private void PastCropComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FieldsListBox.SelectedItem is Field selectedField && PastCropComboBox.SelectedItem is Crop selectedPastCrop)
+            {
+                if (selectedField.Year == 0)  // Дозволяємо зміну тільки якщо рік == 0
+                {
+                    selectedField.PastCrop = selectedPastCrop;
+                    dataService.SaveField(selectedField);
+                }
 
+                // Якщо рік > 0, після першої зміни блокуємо редагування
+                if (selectedField.Year > 0)
+                {
+                    PastCropComboBox.IsEnabled = false;
+                }
+            }
+        }
 
         private void FieldsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -74,16 +90,19 @@ namespace Agroculture
                 FieldAreaTextBox.Text = selectedField.Area.ToString(CultureInfo.InvariantCulture);
                 SoilComboBox.SelectedItem = soils.Find(s => s.ID == selectedField.SelectedSoil?.ID);
 
-                // Завантажуємо збережені значення, а не стандартні з ґрунту
                 CurrentNTextBox.Text = selectedField.CurrentN.ToString(CultureInfo.InvariantCulture);
                 CurrentP2O5TextBox.Text = selectedField.CurrentP2O5.ToString(CultureInfo.InvariantCulture);
                 CurrentK2OTextBox.Text = selectedField.CurrentK2O.ToString(CultureInfo.InvariantCulture);
 
                 CurrentCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.CurrentCrop?.ID);
                 PastCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.PastCrop?.ID);
+
                 YearCounterTextBlock.Text = $"Рік: {selectedField.Year}";
 
-                // Фіксуємо вибір ґрунту, якщо він був змінений вручну раніше
+                // Блокуємо зміну минулорічної культури, якщо рік > 0
+                PastCropComboBox.IsEnabled = (selectedField.Year == 0);
+
+                // Блокуємо зміну типу ґрунту, якщо він був зафіксований
                 SoilComboBox.IsEnabled = !selectedField.IsSoilFixed;
             }
         }
