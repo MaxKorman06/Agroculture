@@ -18,6 +18,7 @@ namespace Agroculture
         // Шляхи до файлів JSON (розміщені в папці Data)
         private string soilsFilePath = "Data/soils.json";
         private string cropsFilePath = "Data/crops.json";
+        // fieldsFilePath більше не використовується для збереження, але може бути збережений для першого запуску
         private string fieldsFilePath = "Data/fields.json";
 
         public MainWindow()
@@ -31,9 +32,9 @@ namespace Agroculture
         {
             soils = dataService.LoadSoils();
             crops = dataService.LoadCrops();
-            fields = dataService.LoadFields(); // Завантажуємо з папки saves
+            fields = dataService.LoadFields(); // Завантаження з saves/
 
-            // Прив'язка до ComboBox-ів
+            // Прив'язка даних до ComboBox-ів
             SoilComboBox.ItemsSource = soils;
             CurrentCropComboBox.ItemsSource = crops;
             PastCropComboBox.ItemsSource = crops;
@@ -52,6 +53,7 @@ namespace Agroculture
         {
             if (SoilComboBox.SelectedItem is Soil selectedSoil)
             {
+                // При зміні типу ґрунту автоматично задаємо дефолтні значення поживних речовин
                 CurrentNTextBox.Text = selectedSoil.DefaultN.ToString();
                 CurrentP2O5TextBox.Text = selectedSoil.DefaultP2O5.ToString();
                 CurrentK2OTextBox.Text = selectedSoil.DefaultK2O.ToString();
@@ -72,9 +74,9 @@ namespace Agroculture
                 CurrentK2OTextBox.Text = selectedField.CurrentK2O.ToString(CultureInfo.InvariantCulture);
                 CurrentCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.CurrentCrop?.ID);
                 PastCropComboBox.SelectedItem = crops.Find(c => c.ID == selectedField.PastCrop?.ID);
-
-                // Відображення року для вибраного поля
                 YearCounterTextBlock.Text = $"Рік: {selectedField.Year}";
+                // Блокуємо вибір типу ґрунту, якщо для цього поля зафіксовано значення поживних речовин
+                SoilComboBox.IsEnabled = !selectedField.IsSoilFixed;
             }
         }
 
@@ -91,10 +93,11 @@ namespace Agroculture
                 CurrentK2O = 0,
                 CurrentCrop = null,
                 PastCrop = null,
-                Year = 0 // Початкове значення для нового поля
+                Year = 0,
+                IsSoilFixed = false
             };
             fields.Add(newField);
-            // Зберігаємо нове поле окремо у saves/ через SaveField
+            // Зберігаємо нове поле у saves/ через SaveField
             dataService.SaveField(newField);
             RefreshFieldsList();
         }
@@ -122,9 +125,9 @@ namespace Agroculture
                     return;
                 }
 
-                // Встановлюємо минулу культуру рівною поточній
+                // Фіксуємо минулу культуру рівною поточній
                 selectedField.PastCrop = selectedField.CurrentCrop;
-                // Збільшуємо рік лише для вибраного поля
+                // Збільшуємо рік для цього поля
                 selectedField.Year++;
                 YearCounterTextBlock.Text = $"Рік: {selectedField.Year}";
                 PastCropComboBox.IsEnabled = selectedField.Year == 0;
@@ -133,7 +136,6 @@ namespace Agroculture
                 selectedField.CurrentCrop = null;
                 CurrentCropComboBox.SelectedItem = null;
 
-                // Зберігаємо змінену інформацію про поле
                 dataService.SaveField(selectedField);
                 RefreshFieldsList();
             }
@@ -149,9 +151,9 @@ namespace Agroculture
         }
 
         /// <summary>
-        /// Оновлює властивості вибраного поля з даних, введених у форму,
-        /// і автоматично зберігає зміни у відповідний файл saves/field_{ID}.json.
-        /// Викликається при зміні даних (події LostFocus та SelectionChanged).
+        /// Оновлює властивості вибраного поля з даних форми, перевіряє валідність введених чисел,
+        /// встановлює прапорець фіксації типу ґрунту, якщо поживні значення відрізняються від дефолтних,
+        /// та зберігає зміни у відповідний файл saves/field_{ID}.json.
         /// </summary>
         private void UpdateSelectedField()
         {
@@ -159,26 +161,75 @@ namespace Agroculture
             {
                 selectedField.Name = FieldNameTextBox.Text;
 
+                // Валідація площі
                 if (double.TryParse(FieldAreaTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double area))
+                {
+                    if (area < 0.01 || area > 1000000)
+                    {
+                        MessageBox.Show("Площа має бути в межах від 0.01 до 1000000.");
+                        return;
+                    }
                     selectedField.Area = area;
+                }
 
                 selectedField.SelectedSoil = SoilComboBox.SelectedItem as Soil;
 
+                // Валідація поживних речовин
                 if (double.TryParse(CurrentNTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double n))
+                {
+                    if (n < 0.01 || n > 1000)
+                    {
+                        MessageBox.Show("Значення N має бути в межах від 0.01 до 1000.");
+                        return;
+                    }
                     selectedField.CurrentN = n;
+                }
 
                 if (double.TryParse(CurrentP2O5TextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double p))
+                {
+                    if (p < 0.01 || p > 1000)
+                    {
+                        MessageBox.Show("Значення P₂O₅ має бути в межах від 0.01 до 1000.");
+                        return;
+                    }
                     selectedField.CurrentP2O5 = p;
+                }
 
                 if (double.TryParse(CurrentK2OTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double k))
+                {
+                    if (k < 0.01 || k > 1000)
+                    {
+                        MessageBox.Show("Значення K₂O має бути в межах від 0.01 до 1000.");
+                        return;
+                    }
                     selectedField.CurrentK2O = k;
+                }
 
                 if (CurrentCropComboBox.SelectedItem != null)
                     selectedField.CurrentCrop = CurrentCropComboBox.SelectedItem as Crop;
 
-                // Для року 0 дозволено ручне задання минулої культури
                 if (selectedField.Year == 0 && PastCropComboBox.SelectedItem != null)
                     selectedField.PastCrop = PastCropComboBox.SelectedItem as Crop;
+
+                // Якщо тип ґрунту вибрано, перевіряємо дефолтні значення для цього ґрунту.
+                // Якщо поточні поживні значення не співпадають з дефолтними, фіксуємо тип ґрунту.
+                if (selectedField.SelectedSoil != null)
+                {
+                    double tol = 0.001;
+                    if (Math.Abs(selectedField.CurrentN - selectedField.SelectedSoil.DefaultN) > tol ||
+                        Math.Abs(selectedField.CurrentP2O5 - selectedField.SelectedSoil.DefaultP2O5) > tol ||
+                        Math.Abs(selectedField.CurrentK2O - selectedField.SelectedSoil.DefaultK2O) > tol)
+                    {
+                        selectedField.IsSoilFixed = true;
+                    }
+                    else
+                    {
+                        selectedField.IsSoilFixed = false;
+                    }
+                }
+
+                // Оновлюємо стан елемента SoilComboBox згідно з прапорцем фіксації
+                SoilComboBox.IsEnabled = !selectedField.IsSoilFixed;
 
                 dataService.SaveField(selectedField);
                 RefreshFieldsList();
@@ -206,13 +257,11 @@ namespace Agroculture
         /// </summary>
         private void RefreshFieldsList()
         {
-            // Зберігаємо поточний вибір, якщо він існує
             var selectedField = FieldsListBox.SelectedItem as Field;
 
             FieldsListBox.ItemsSource = null;
             FieldsListBox.ItemsSource = fields;
 
-            // Якщо попереднє поле було вибраним, пробуємо його знову встановити
             if (selectedField != null && fields.Exists(f => f.ID == selectedField.ID))
             {
                 FieldsListBox.SelectedItem = fields.Find(f => f.ID == selectedField.ID);

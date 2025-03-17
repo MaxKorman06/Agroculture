@@ -20,5 +20,7 @@ namespace Agroculture.Models
 
         // Додаємо властивість для року поля
         public int Year { get; set; } = 0;
+
+        public bool IsSoilFixed { get; set; }
     }
 }
