@@ -1,47 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Agroculture.Models
+﻿public class Crop
 {
-    public class Crop
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
+    public int ID { get; set; }
+    public string Name { get; set; }
 
-        // Питомий винос елементів живлення
-        public NutrientUptake NutrientUptake { get; set; }
+    // Планова врожайність (ц/га) для даної культури
+    public double PlannedYield { get; set; }
 
-        // Коефіцієнти використання з ґрунту
-        public SoilUtilization SoilUtilization { get; set; }
+    // Питомий винос елементів живлення (кг/ц)
+    public NutrientUptake NutrientUptake { get; set; }
 
-        // Коефіцієнти використання з мінеральних добрив
-        public FertilizerUtilization FertilizerUtilization { get; set; }
+    // Коефіцієнти використання з ґрунту
+    public SoilUtilization SoilUtilization { get; set; }
 
-        public string RecomendedNextCrop { get; set; }
-    }
+    // Коефіцієнти використання з мінеральних добрив
+    public FertilizerUtilization FertilizerUtilization { get; set; }
 
-    public class NutrientUptake
-    {
-        public double N { get; set; }
-        public double P2O5 { get; set; }
-        public double K2O { get; set; }
-    }
+    public string RecomendedNextCrop { get; set; }
+}
 
-    public class SoilUtilization
-    {
-        public double N { get; set; }
-        public double P2O5 { get; set; }
-        public double K2O { get; set; }
-    }
+public class NutrientUptake
+{
+    public double N { get; set; }
+    public double P2O5 { get; set; }
+    public double K2O { get; set; }
+}
 
-    public class FertilizerUtilization
-    {
-        public double N { get; set; }
-        public double P2O5 { get; set; }
-        public double K2O { get; set; }
-    }
+public class SoilUtilization
+{
+    public double N { get; set; }
+    public double P2O5 { get; set; }
+    public double K2O { get; set; }
+}
 
+public class FertilizerUtilization
+{
+    public double N { get; set; }
+    public double P2O5 { get; set; }
+    public double K2O { get; set; }
 }

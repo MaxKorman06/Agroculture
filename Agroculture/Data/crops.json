@@ -2,6 +2,7 @@
   {
     "ID": 1,
     "Name": "Пшениця озима",
+    "PlannedYield": 47.0,
     "NutrientUptake": {
       "N": 3.25,
       "P2O5": 1.05,
@@ -22,6 +23,7 @@
   {
     "ID": 2,
     "Name": "Пшениця яра",
+    "PlannedYield": 43.0,
     "NutrientUptake": {
       "N": 3.65,
       "P2O5": 1.15,
@@ -42,6 +44,7 @@
   {
     "ID": 3,
     "Name": "Жито озиме",
+    "PlannedYield": 34.0,
     "NutrientUptake": {
       "N": 3.1,
       "P2O5": 1.25,
@@ -62,6 +65,7 @@
   {
     "ID": 4,
     "Name": "Ячмінь",
+    "PlannedYield": 37.0,
     "NutrientUptake": {
       "N": 2.5,
       "P2O5": 1.0,
@@ -82,6 +86,7 @@
   {
     "ID": 5,
     "Name": "Овес",
+    "PlannedYield": 26.0,
     "NutrientUptake": {
       "N": 3.2,
       "P2O5": 1.35,
@@ -102,6 +107,7 @@
   {
     "ID": 6,
     "Name": "Просо",
+    "PlannedYield": 23.8,
     "NutrientUptake": {
       "N": 3.25,
       "P2O5": 1.05,
@@ -122,6 +128,7 @@
   {
     "ID": 7,
     "Name": "Кукурудза",
+    "PlannedYield": 78.1,
     "NutrientUptake": {
       "N": 3.25,
       "P2O5": 1.05,
@@ -142,6 +149,7 @@
   {
     "ID": 8,
     "Name": "Рис",
+    "PlannedYield": 60.0,
     "NutrientUptake": {
       "N": 2.8,
       "P2O5": 1.35,
@@ -162,6 +170,7 @@
   {
     "ID": 9,
     "Name": "Гречка",
+    "PlannedYield": 30.0,
     "NutrientUptake": {
       "N": 3.2,
       "P2O5": 1.45,
@@ -182,6 +191,7 @@
   {
     "ID": 10,
     "Name": "Горох",
+    "PlannedYield": 23.0,
     "NutrientUptake": {
       "N": 6.4,
       "P2O5": 1.45,
@@ -202,6 +212,7 @@
   {
     "ID": 11,
     "Name": "Соя",
+    "PlannedYield": 22.7,
     "NutrientUptake": {
       "N": 7.0,
       "P2O5": 1.5,
@@ -222,6 +233,7 @@
   {
     "ID": 12,
     "Name": "Соняшник",
+    "PlannedYield": 21.0,
     "NutrientUptake": {
       "N": 6.0,
       "P2O5": 2.65,

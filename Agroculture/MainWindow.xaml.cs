@@ -272,17 +272,16 @@ namespace Agroculture
         /// <param name = "area" > Площа поля(га)</param>
         /// <returns>Кортеж з dosePerHa(кг/га) і totalDose(кг)</returns>
         private (double dosePerHa, double totalDose) CalculateDose(
-            double plannedYield,
-            double nutrientUptake,
-            double defaultContent,
-            double bulkDensity,
-            double h,
-            double soilUtilization,
-            double fertilizerUtilization,
-            double area)
+        double plannedYield,
+        double nutrientUptake,
+        double defaultContent,
+        double bulkDensity,
+        double h,
+        double soilUtilization,
+        double fertilizerUtilization,
+        double area)
         {
-            // Формула розрахунку: D = (U * NutrientUptake - (DefaultN * BulkDensity * h)*SoilUtilization) / FertilizerUtilization
-            double dosePerHa = ((plannedYield * nutrientUptake) - (((defaultContent/10) * bulkDensity * h) * soilUtilization)) / fertilizerUtilization;
+            double dosePerHa = (plannedYield * nutrientUptake - ((defaultContent/10) * bulkDensity * h) * soilUtilization) / fertilizerUtilization;
             if (dosePerHa < 0)
                 dosePerHa = 0;
             double totalDose = dosePerHa * area;
