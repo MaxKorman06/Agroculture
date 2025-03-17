@@ -59,14 +59,14 @@
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Поточна культура:" Width="100"/>
                 <ComboBox x:Name="CurrentCropComboBox" Width="200" DisplayMemberPath="Name"
-                  SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="CurrentCropComboBox_DropDownClosed"/>
+                    SelectionChanged="FieldDetails_SelectionChanged"/>
             </StackPanel>
 
             <!-- Минула культура -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Минула культура:" Width="100"/>
                 <ComboBox x:Name="PastCropComboBox" Width="200" DisplayMemberPath="Name"
-                  SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="PastCropComboBox_DropDownClosed"/>
+                    SelectionChanged="FieldDetails_SelectionChanged"/>
             </StackPanel>
 
             <!-- Кнопки -->

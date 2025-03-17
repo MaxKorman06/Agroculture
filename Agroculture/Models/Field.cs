@@ -17,5 +17,8 @@ namespace Agroculture.Models
         public double CurrentK2O { get; set; }
         public Crop CurrentCrop { get; set; }
         public Crop PastCrop { get; set; }
+
+        // Додаємо властивість для року поля
+        public int Year { get; set; } = 0;
     }
 }
