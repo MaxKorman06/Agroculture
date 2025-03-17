@@ -181,11 +181,118 @@ namespace Agroculture
                 MessageBox.Show("Будь ласка, оберіть поле.");
             }
         }
-
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Розрахунок виконано (демонстраційний варіант)");
+            if (FieldsListBox.SelectedItem is Field selectedField)
+            {
+                if (selectedField.CurrentCrop == null || selectedField.SelectedSoil == null)
+                {
+                    MessageBox.Show("Будь ласка, оберіть поточну культуру та тип ґрунту для розрахунку.");
+                    return;
+                }
+
+                try
+                {
+                    // Планована врожайність (ц/га) – тестове значення
+                    double plannedYield = 45.0;
+                    // Глибина розрахункового шару (см)
+                    double h = 20.0;
+                    // Площа поля (га)
+                    double area = selectedField.Area;
+
+                    // Розрахунок для азоту (N)
+                    var nResults = CalculateDose(
+                        plannedYield,
+                        selectedField.CurrentCrop.NutrientUptake.N,
+                        selectedField.SelectedSoil.DefaultN,
+                        selectedField.SelectedSoil.BulkDensity,
+                        h,
+                        selectedField.CurrentCrop.SoilUtilization.N,
+                        selectedField.CurrentCrop.FertilizerUtilization.N,
+                        area
+                    );
+
+                    // Розрахунок для фосфору (P₂O₅)
+                    var pResults = CalculateDose(
+                        plannedYield,
+                        selectedField.CurrentCrop.NutrientUptake.P2O5,
+                        selectedField.SelectedSoil.DefaultP2O5,
+                        selectedField.SelectedSoil.BulkDensity,
+                        h,
+                        selectedField.CurrentCrop.SoilUtilization.P2O5,
+                        selectedField.CurrentCrop.FertilizerUtilization.P2O5,
+                        area
+                    );
+
+                    // Розрахунок для калію (K₂O)
+                    var kResults = CalculateDose(
+                        plannedYield,
+                        selectedField.CurrentCrop.NutrientUptake.K2O,
+                        selectedField.SelectedSoil.DefaultK2O,
+                        selectedField.SelectedSoil.BulkDensity,
+                        h,
+                        selectedField.CurrentCrop.SoilUtilization.K2O,
+                        selectedField.CurrentCrop.FertilizerUtilization.K2O,
+                        area
+                    );
+
+                    // Оновлення UI (TextBox) для відображення результатів
+                    RateNTextBox.Text = nResults.dosePerHa.ToString("F2", CultureInfo.InvariantCulture) + " кг/га";
+                    TotalNTextBox.Text = nResults.totalDose.ToString("F2", CultureInfo.InvariantCulture) + " кг";
+
+                    RateP2O5TextBox.Text = pResults.dosePerHa.ToString("F2", CultureInfo.InvariantCulture) + " кг/га";
+                    TotalP2O5TextBox.Text = pResults.totalDose.ToString("F2", CultureInfo.InvariantCulture) + " кг";
+
+                    RateK2OTextBox.Text = kResults.dosePerHa.ToString("F2", CultureInfo.InvariantCulture) + " кг/га";
+                    TotalK2OTextBox.Text = kResults.totalDose.ToString("F2", CultureInfo.InvariantCulture) + " кг";
+
+                    MessageBox.Show("Розрахунок добрив виконано.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Помилка при розрахунку: " + ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Будь ласка, оберіть поле для розрахунку.");
+            }
         }
+
+        /// <summary>
+        /// Обчислює норму добрив(кг/га) та загальну потребу(кг) для заданого елементу.
+        /// </summary>
+        /// <param name = "plannedYield" > Запланована врожайність(ц/га)</param>
+        /// <param name = "nutrientUptake" > Питомий винос елементу живлення(кг/ц)</param>
+        /// <param name = "defaultContent" > Дефолтний вміст елементу в ґрунті(мг/100г)</param>
+        /// <param name = "bulkDensity" > Об'ємна маса ґрунту (г/см³)</param>
+        /// <param name = "h" > Глибина розрахункового шару(см)</param>
+        /// <param name = "soilUtilization" > Коефіцієнт використання з ґрунту</param>
+        /// <param name = "fertilizerUtilization" > Коефіцієнт використання з добрив</param>
+        /// <param name = "area" > Площа поля(га)</param>
+        /// <returns>Кортеж з dosePerHa(кг/га) і totalDose(кг)</returns>
+        private (double dosePerHa, double totalDose) CalculateDose(
+            double plannedYield,
+            double nutrientUptake,
+            double defaultContent,
+            double bulkDensity,
+            double h,
+            double soilUtilization,
+            double fertilizerUtilization,
+            double area)
+        {
+            // Формула розрахунку: D = (U * NutrientUptake - (DefaultN * BulkDensity * h)*SoilUtilization) / FertilizerUtilization
+            double dosePerHa = ((plannedYield * nutrientUptake) - (((defaultContent/10) * bulkDensity * h) * soilUtilization)) / fertilizerUtilization;
+            if (dosePerHa < 0)
+                dosePerHa = 0;
+            double totalDose = dosePerHa * area;
+            return (dosePerHa, totalDose);
+        }
+
+        //private void Calculate_Click(object sender, RoutedEventArgs e)
+        //{
+        //    MessageBox.Show("Розрахунок виконано (демонстраційний варіант)");
+        //}
 
         /// <summary>
         /// Оновлює властивості вибраного поля з даних форми, перевіряє валідність введених чисел,
