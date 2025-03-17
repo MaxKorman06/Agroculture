@@ -44,9 +44,9 @@ namespace Agroculture
         {
             soils = dataService.LoadSoils();
             crops = dataService.LoadCrops();
-            fields = dataService.LoadFields();
+            fields = dataService.LoadFields(); // Тепер завантажує з "saves/"
 
-            // Прив'язка даних до ComboBox-ів
+            // Прив'язка до ComboBox-ів
             SoilComboBox.ItemsSource = soils;
             CurrentCropComboBox.ItemsSource = crops;
             PastCropComboBox.ItemsSource = crops;
@@ -54,12 +54,13 @@ namespace Agroculture
             // Прив'язка списку полів
             FieldsListBox.ItemsSource = fields;
 
-            // Якщо поля існують, автоматично вибираємо перше
+            // Автоматичний вибір першого поля, якщо воно є
             if (fields.Count > 0)
             {
                 FieldsListBox.SelectedIndex = 0;
             }
         }
+
 
         private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -104,7 +105,10 @@ namespace Agroculture
                 PastCrop = null
             };
             fields.Add(newField);
-            dataService.SaveFields(fields);
+            if (FieldsListBox.SelectedItem is Field selectedField)
+            {
+                dataService.SaveField(selectedField);
+            }
             RefreshFieldsList();
         }
 
@@ -112,8 +116,13 @@ namespace Agroculture
         {
             if (FieldsListBox.SelectedItem is Field selectedField)
             {
+                // Видаляємо JSON-файл для цього поля
+                dataService.DeleteField(selectedField.ID);
+
+                // Видаляємо поле з колекції
                 fields.Remove(selectedField);
-                dataService.SaveFields(fields);
+
+                // Оновлюємо UI
                 RefreshFieldsList();
             }
         }
@@ -138,7 +147,10 @@ namespace Agroculture
                 selectedField.CurrentCrop = null;
                 CurrentCropComboBox.SelectedItem = null;
 
-                dataService.SaveFields(fields);
+                if (FieldsListBox.SelectedItem is Field selectedField1)
+                {
+                    dataService.SaveField(selectedField1);
+                }
                 RefreshFieldsList();
             }
             else
@@ -183,7 +195,10 @@ namespace Agroculture
                 if (currentYear == 0)
                     selectedField.PastCrop = PastCropComboBox.SelectedItem as Crop;
 
-                dataService.SaveFields(fields);
+                if (FieldsListBox.SelectedItem is Field selectedField1)
+                {
+                    dataService.SaveField(selectedField1);
+                }
                 RefreshFieldsList();
             }
         }
