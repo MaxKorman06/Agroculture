@@ -5,20 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Agroculture"
         mc:Ignorable="d"
-        Title="Fertilizer Calculator" Height="450" Width="800">
+        Title="Fertilizer Calculator" Height="500" Width="1000">
     <Grid>
+        <!-- Головна розкладка з трьома колонками -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
+            <!-- Список полів -->
             <ColumnDefinition Width="*"/>
+            <!-- Деталі поля -->
+            <ColumnDefinition Width="300"/>
+            <!-- Розрахунки добрив -->
         </Grid.ColumnDefinitions>
-        <!-- Ліва панель: Список полів та кнопки -->
+
+        <!-- Колонка 0: Список полів -->
         <StackPanel Grid.Column="0" Background="#EEE">
             <TextBlock Text="Поля" FontWeight="Bold" Margin="10"/>
             <ListBox x:Name="FieldsListBox" Margin="10" DisplayMemberPath="Name" SelectionChanged="FieldsListBox_SelectionChanged"/>
             <Button Content="Додати поле" Margin="10" Click="AddField_Click"/>
             <Button Content="Видалити поле" Margin="10" Click="DeleteField_Click"/>
         </StackPanel>
-        <!-- Права панель: Деталі поля -->
+
+        <!-- Колонка 1: Деталі поля -->
         <StackPanel Grid.Column="1" Margin="10">
             <TextBlock Text="Деталі поля" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
 
@@ -28,7 +35,7 @@
                 <TextBox x:Name="FieldNameTextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
-            <!-- Площа поля -->
+            <!-- Площа -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Площа (га):" Width="100"/>
                 <TextBox x:Name="FieldAreaTextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
@@ -41,7 +48,7 @@
                   SelectionChanged="SoilComboBox_SelectionChanged" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
-            <!-- Значення поживних речовин -->
+            <!-- Поживні речовини -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="N:" Width="100"/>
                 <TextBox x:Name="CurrentNTextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
@@ -55,28 +62,75 @@
                 <TextBox x:Name="CurrentK2OTextBox" Width="200" LostFocus="FieldDetails_LostFocus"/>
             </StackPanel>
 
-            <!-- Поточна культура -->
+            <!-- Культури -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Поточна культура:" Width="100"/>
                 <ComboBox x:Name="CurrentCropComboBox" Width="200" DisplayMemberPath="Name"
-                    SelectionChanged="FieldDetails_SelectionChanged"/>
+                  SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="CurrentCropComboBox_DropDownClosed"/>
             </StackPanel>
-
-            <!-- Минула культура -->
             <StackPanel Orientation="Horizontal" Margin="0,5">
                 <TextBlock Text="Минула культура:" Width="100"/>
                 <ComboBox x:Name="PastCropComboBox" Width="200" DisplayMemberPath="Name"
-                    SelectionChanged="FieldDetails_SelectionChanged"/>
+                  SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="PastCropComboBox_DropDownClosed"/>
             </StackPanel>
+
+            <!-- Рік поля -->
+            <TextBlock x:Name="YearCounterTextBlock" Text="Рік: 0" FontWeight="Bold" Margin="10"/>
 
             <!-- Кнопки -->
             <StackPanel Orientation="Horizontal" Margin="10">
                 <Button Content="Розрахувати" Width="100" Margin="0,0,10,0" Click="Calculate_Click"/>
                 <Button Content="Наступний рік" Width="100" Click="NextYear_Click"/>
             </StackPanel>
-
-            <!-- Лічильник років -->
-            <TextBlock x:Name="YearCounterTextBlock" Text="Рік: 0" FontWeight="Bold" Margin="10"/>
         </StackPanel>
+
+        <!-- Колонка 2: Розрахунки добрив -->
+        <StackPanel Grid.Column="2" Margin="10">
+            <TextBlock Text="Розрахунок добрив" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+
+            <!-- Для азоту (N) -->
+            <GroupBox Header="Азот (N)" Margin="0,5">
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Загалом (кг):" Width="120" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TotalNTextBox" IsReadOnly="True" Width="100" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="На га (кг/га):" Width="120" VerticalAlignment="Center"/>
+                        <TextBox x:Name="RateNTextBox" IsReadOnly="True" Width="100" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Для фосфору (P₂O₅) -->
+            <GroupBox Header="Фосфор (P₂O₅)" Margin="0,5">
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Загалом (кг):" Width="120" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TotalP2O5TextBox" IsReadOnly="True" Width="100" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="На га (кг/га):" Width="120" VerticalAlignment="Center"/>
+                        <TextBox x:Name="RateP2O5TextBox" IsReadOnly="True" Width="100" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Для калію (K₂O) -->
+            <GroupBox Header="Калій (K₂O)" Margin="0,5">
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="Загалом (кг):" Width="120" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TotalK2OTextBox" IsReadOnly="True" Width="100" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="На га (кг/га):" Width="120" VerticalAlignment="Center"/>
+                        <TextBox x:Name="RateK2OTextBox" IsReadOnly="True" Width="100" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+        </StackPanel>
+
     </Grid>
 </Window>

@@ -2,97 +2,241 @@
   {
     "ID": 1,
     "Name": "Пшениця озима",
-    "RequiredN": 120.0,
-    "RequiredP2O5": 60.0,
-    "RequiredK2O": 40.0,
+    "NutrientUptake": {
+      "N": 3.25,
+      "P2O5": 1.05,
+      "K2O": 2.15
+    },
+    "SoilUtilization": {
+      "N": 0.275,
+      "P2O5": 0.1,
+      "K2O": 0.14
+    },
+    "FertilizerUtilization": {
+      "N": 0.7,
+      "P2O5": 0.3,
+      "K2O": 0.75
+    },
     "RecomendedNextCrop": "Ячмінь"
   },
   {
     "ID": 2,
     "Name": "Пшениця яра",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 3.65,
+      "P2O5": 1.15,
+      "K2O": 2.3
+    },
+    "SoilUtilization": {
+      "N": 0.25,
+      "P2O5": 0.075,
+      "K2O": 0.12
+    },
+    "FertilizerUtilization": {
+      "N": 0.6,
+      "P2O5": 0.25,
+      "K2O": 0.7
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 3,
     "Name": "Жито озиме",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 3.1,
+      "P2O5": 1.25,
+      "K2O": 2.6
+    },
+    "SoilUtilization": {
+      "N": 0.275,
+      "P2O5": 0.1,
+      "K2O": 0.13
+    },
+    "FertilizerUtilization": {
+      "N": 0.675,
+      "P2O5": 0.325,
+      "K2O": 0.725
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 4,
     "Name": "Ячмінь",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 2.5,
+      "P2O5": 1.0,
+      "K2O": 1.95
+    },
+    "SoilUtilization": {
+      "N": 0.25,
+      "P2O5": 0.1,
+      "K2O": 0.09
+    },
+    "FertilizerUtilization": {
+      "N": 0.675,
+      "P2O5": 0.3,
+      "K2O": 0.65
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 5,
     "Name": "Овес",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 3.2,
+      "P2O5": 1.35,
+      "K2O": 2.65
+    },
+    "SoilUtilization": {
+      "N": 0.275,
+      "P2O5": 0.1,
+      "K2O": 0.12
+    },
+    "FertilizerUtilization": {
+      "N": 0.7,
+      "P2O5": 0.3,
+      "K2O": 0.75
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 6,
     "Name": "Просо",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 3.25,
+      "P2O5": 1.05,
+      "K2O": 2.35
+    },
+    "SoilUtilization": {
+      "N": 0.25,
+      "P2O5": 0.09,
+      "K2O": 0.09
+    },
+    "FertilizerUtilization": {
+      "N": 0.65,
+      "P2O5": 0.325,
+      "K2O": 0.75
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 7,
     "Name": "Кукурудза",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 3.25,
+      "P2O5": 1.05,
+      "K2O": 2.35
+    },
+    "SoilUtilization": {
+      "N": 0.325,
+      "P2O5": 0.12,
+      "K2O": 0.19
+    },
+    "FertilizerUtilization": {
+      "N": 0.75,
+      "P2O5": 0.35,
+      "K2O": 0.85
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 8,
     "Name": "Рис",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 2.8,
+      "P2O5": 1.35,
+      "K2O": 3.4
+    },
+    "SoilUtilization": {
+      "N": 0.35,
+      "P2O5": 0.13,
+      "K2O": 0.13
+    },
+    "FertilizerUtilization": {
+      "N": 0.725,
+      "P2O5": 0.275,
+      "K2O": 0.825
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 9,
     "Name": "Гречка",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 3.2,
+      "P2O5": 1.45,
+      "K2O": 3.9
+    },
+    "SoilUtilization": {
+      "N": 0.25,
+      "P2O5": 0.1,
+      "K2O": 0.09
+    },
+    "FertilizerUtilization": {
+      "N": 0.6,
+      "P2O5": 0.375,
+      "K2O": 0.8
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 10,
     "Name": "Горох",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 6.4,
+      "P2O5": 1.45,
+      "K2O": 2.05
+    },
+    "SoilUtilization": {
+      "N": 0.425,
+      "P2O5": 0.135,
+      "K2O": 0.125
+    },
+    "FertilizerUtilization": {
+      "N": 0.65,
+      "P2O5": 0.375,
+      "K2O": 0.75
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 11,
     "Name": "Соя",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 7.0,
+      "P2O5": 1.5,
+      "K2O": 2.0
+    },
+    "SoilUtilization": {
+      "N": 0.375,
+      "P2O5": 0.12,
+      "K2O": 0.105
+    },
+    "FertilizerUtilization": {
+      "N": 0.625,
+      "P2O5": 0.325,
+      "K2O": 0.75
+    },
     "RecomendedNextCrop": "Соя"
   },
   {
     "ID": 12,
     "Name": "Соняшник",
-    "RequiredN": 150.0,
-    "RequiredP2O5": 70.0,
-    "RequiredK2O": 50.0,
+    "NutrientUptake": {
+      "N": 6.0,
+      "P2O5": 2.65,
+      "K2O": 17.5
+    },
+    "SoilUtilization": {
+      "N": 0.375,
+      "P2O5": 0.12,
+      "K2O": 0.16
+    },
+    "FertilizerUtilization": {
+      "N": 0.65,
+      "P2O5": 0.3,
+      "K2O": 0.8
+    },
     "RecomendedNextCrop": "Соя"
   }
 ]

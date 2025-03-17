@@ -28,22 +28,32 @@ namespace Agroculture
             LoadData();
         }
 
+        private void CurrentCropComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            UpdateSelectedField();
+        }
+
+        private void PastCropComboBox_DropDownClosed(object sender, EventArgs e)
+        {
+            UpdateSelectedField();
+        }
+
         private void LoadData()
-{
-    soils = dataService.LoadSoils();
-    crops = dataService.LoadCrops();
-    fields = dataService.LoadFields(); // Завантаження збережених значень
+        {
+            soils = dataService.LoadSoils();
+            crops = dataService.LoadCrops();
+            fields = dataService.LoadFields(); // Завантаження збережених значень
 
-    SoilComboBox.ItemsSource = soils;
-    CurrentCropComboBox.ItemsSource = crops;
-    PastCropComboBox.ItemsSource = crops;
-    FieldsListBox.ItemsSource = fields;
+            SoilComboBox.ItemsSource = soils;
+            CurrentCropComboBox.ItemsSource = crops;
+            PastCropComboBox.ItemsSource = crops;
+            FieldsListBox.ItemsSource = fields;
 
-    if (fields.Count > 0)
-    {
-        FieldsListBox.SelectedIndex = 0;
-    }
-}
+            if (fields.Count > 0)
+            {
+                FieldsListBox.SelectedIndex = 0;
+            }
+        }
 
 
         private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

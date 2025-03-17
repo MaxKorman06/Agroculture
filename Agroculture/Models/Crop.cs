@@ -10,9 +10,38 @@ namespace Agroculture.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public double RequiredN { get; set; }
-        public double RequiredP2O5 { get; set; }
-        public double RequiredK2O { get; set; }
+
+        // Питомий винос елементів живлення
+        public NutrientUptake NutrientUptake { get; set; }
+
+        // Коефіцієнти використання з ґрунту
+        public SoilUtilization SoilUtilization { get; set; }
+
+        // Коефіцієнти використання з мінеральних добрив
+        public FertilizerUtilization FertilizerUtilization { get; set; }
+
         public string RecomendedNextCrop { get; set; }
     }
+
+    public class NutrientUptake
+    {
+        public double N { get; set; }
+        public double P2O5 { get; set; }
+        public double K2O { get; set; }
+    }
+
+    public class SoilUtilization
+    {
+        public double N { get; set; }
+        public double P2O5 { get; set; }
+        public double K2O { get; set; }
+    }
+
+    public class FertilizerUtilization
+    {
+        public double N { get; set; }
+        public double P2O5 { get; set; }
+        public double K2O { get; set; }
+    }
+
 }
