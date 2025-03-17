@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Agroculture.Models
 {
-    class Crop
+    public class Crop
     {
         public int ID { get; set; }
         public string Name { get; set; }

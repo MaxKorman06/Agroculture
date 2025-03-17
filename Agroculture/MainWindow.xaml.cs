@@ -186,62 +186,104 @@ namespace Agroculture
         {
             if (FieldsListBox.SelectedItem is Field selectedField)
             {
+                // Оновлюємо назву поля
                 selectedField.Name = FieldNameTextBox.Text;
 
+                // Обробка та коригування значення площі
                 if (double.TryParse(FieldAreaTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double area))
                 {
-                    if (area < 0.01 || area > 1000000)
+                    if (area < 0.01)
                     {
-                        MessageBox.Show("Площа має бути в межах від 0.01 до 1000000.");
-                        return;
+                        area = 0.01;
+                    }
+                    else if (area > 1000000)
+                    {
+                        area = 1000000;
                     }
                     selectedField.Area = area;
+                    // Оновлюємо UI, щоб відобразити кориговане значення
+                    FieldAreaTextBox.Text = area.ToString(CultureInfo.InvariantCulture);
                 }
 
-                if (double.TryParse(CurrentNTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double n) &&
-                    double.TryParse(CurrentP2O5TextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double p) &&
-                    double.TryParse(CurrentK2OTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double k))
+                // Оновлюємо обраний тип ґрунту
+                selectedField.SelectedSoil = SoilComboBox.SelectedItem as Soil;
+
+                // Обробка та коригування значень поживних речовин
+                if (double.TryParse(CurrentNTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double n))
                 {
-                    if (n < 0.01 || n > 1000 || p < 0.01 || p > 1000 || k < 0.01 || k > 1000)
+                    if (n < 0.01)
                     {
-                        MessageBox.Show("Значення поживних речовин повинні бути від 0.01 до 1000.");
-                        return;
+                        n = 0.01;
                     }
-
-                    // Перевіряємо, чи відрізняються поживні речовини від стандартних значень ґрунту
-                    if (selectedField.SelectedSoil != null)
+                    else if (n > 1000)
                     {
-                        double tol = 0.001;
-                        if (Math.Abs(n - selectedField.SelectedSoil.DefaultN) > tol ||
-                            Math.Abs(p - selectedField.SelectedSoil.DefaultP2O5) > tol ||
-                            Math.Abs(k - selectedField.SelectedSoil.DefaultK2O) > tol)
-                        {
-                            selectedField.IsSoilFixed = true;
-                        }
-                        else
-                        {
-                            selectedField.IsSoilFixed = false;
-                        }
+                        n = 1000;
                     }
-
                     selectedField.CurrentN = n;
-                    selectedField.CurrentP2O5 = p;
-                    selectedField.CurrentK2O = k;
+                    CurrentNTextBox.Text = n.ToString(CultureInfo.InvariantCulture);
                 }
 
+                if (double.TryParse(CurrentP2O5TextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double p))
+                {
+                    if (p < 0.01)
+                    {
+                        p = 0.01;
+                    }
+                    else if (p > 1000)
+                    {
+                        p = 1000;
+                    }
+                    selectedField.CurrentP2O5 = p;
+                    CurrentP2O5TextBox.Text = p.ToString(CultureInfo.InvariantCulture);
+                }
+
+                if (double.TryParse(CurrentK2OTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double k))
+                {
+                    if (k < 0.01)
+                    {
+                        k = 0.01;
+                    }
+                    else if (k > 1000)
+                    {
+                        k = 1000;
+                    }
+                    selectedField.CurrentK2O = k;
+                    CurrentK2OTextBox.Text = k.ToString(CultureInfo.InvariantCulture);
+                }
+
+                // Оновлюємо поточну культуру, якщо обрано
                 if (CurrentCropComboBox.SelectedItem != null)
                     selectedField.CurrentCrop = CurrentCropComboBox.SelectedItem as Crop;
 
+                // Для року 0 дозволено редагування минулої культури
                 if (selectedField.Year == 0 && PastCropComboBox.SelectedItem != null)
                     selectedField.PastCrop = PastCropComboBox.SelectedItem as Crop;
 
-                // Якщо тип ґрунту був зафіксований, більше не даємо його змінювати
+                // Перевірка на фіксацію типу ґрунту за поживними речовинами
+                if (selectedField.SelectedSoil != null)
+                {
+                    double tol = 0.001;
+                    if (Math.Abs(selectedField.CurrentN - selectedField.SelectedSoil.DefaultN) > tol ||
+                        Math.Abs(selectedField.CurrentP2O5 - selectedField.SelectedSoil.DefaultP2O5) > tol ||
+                        Math.Abs(selectedField.CurrentK2O - selectedField.SelectedSoil.DefaultK2O) > tol)
+                    {
+                        selectedField.IsSoilFixed = true;
+                    }
+                    else
+                    {
+                        selectedField.IsSoilFixed = false;
+                    }
+                }
+
+                // Якщо тип ґрунту зафіксовано, блокуємо зміну
                 SoilComboBox.IsEnabled = !selectedField.IsSoilFixed;
 
+                // Зберігаємо змінене поле в окремий файл (saves/field_{ID}.json)
                 dataService.SaveField(selectedField);
                 RefreshFieldsList();
             }
         }
+
 
 
         /// <summary>

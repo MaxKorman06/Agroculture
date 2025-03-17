@@ -14,6 +14,9 @@ namespace Agroculture.Models
         public double DefaultP2O5 { get; set; }
         public double DefaultK2O { get; set; }
 
+        // Нова властивість для об'ємної маси
+        public double BulkDensity { get; set; }
+
         public override string ToString()
         {
             return Name;

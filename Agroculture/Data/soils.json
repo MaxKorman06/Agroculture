@@ -4,27 +4,31 @@
     "Name": "Дерново-середньопідзолистий глеюватий легкосуглинковий",
     "DefaultN": 69,
     "DefaultP2O5": 77,
-    "DefaultK2O": 69
+    "DefaultK2O": 69,
+    "BulkDensity": 1.4
   },
   {
     "ID": 2,
     "Name": "Дерново-карбонатний на алювіальних вапнякових породах",
     "DefaultN": 80,
     "DefaultP2O5": 65,
-    "DefaultK2O": 65
+    "DefaultK2O": 65,
+    "BulkDensity": 1.35
   },
   {
     "ID": 3,
     "Name": "Світло-сірий опідзолений на лесі",
     "DefaultN": 75,
     "DefaultP2O5": 67,
-    "DefaultK2O": 69
+    "DefaultK2O": 69,
+    "BulkDensity": 1.33
   },
   {
     "ID": 4,
     "Name": "Чорнозем опідзолений пилувато-суглинковий на лесі",
     "DefaultN": 117,
     "DefaultP2O5": 97,
-    "DefaultK2O": 110
+    "DefaultK2O": 110,
+    "BulkDensity": 1.3
   }
 ]

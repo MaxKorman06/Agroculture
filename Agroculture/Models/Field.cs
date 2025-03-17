@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Agroculture.Models
 {
-    class Field
+    public class Field
     {
         public int ID { get; set; }
         public string Name { get; set; }
