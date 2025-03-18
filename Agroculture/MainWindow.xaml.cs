@@ -193,12 +193,19 @@ namespace Agroculture
 
                 try
                 {
-                    // Планована врожайність (ц/га) – тестове значення
-                    double plannedYield = 45.0;
                     // Глибина розрахункового шару (см)
                     double h = 20.0;
                     // Площа поля (га)
                     double area = selectedField.Area;
+
+                    // Отримання планової врожайності:
+                    // Якщо PlannedYieldTextBox містить значення > 0, використовується воно,
+                    // інакше використовується стандартне значення з об'єкта Crop.
+                    double plannedYield;
+                    if (!double.TryParse(PlannedYieldTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out plannedYield) || plannedYield <= 0)
+                    {
+                        plannedYield = selectedField.CurrentCrop.PlannedYield;
+                    }
 
                     // Розрахунок для азоту (N)
                     var nResults = CalculateDose(
@@ -236,7 +243,6 @@ namespace Agroculture
                         area
                     );
 
-                    // Оновлення UI (TextBox) для відображення результатів
                     RateNTextBox.Text = nResults.dosePerHa.ToString("F2", CultureInfo.InvariantCulture) + " кг/га";
                     TotalNTextBox.Text = nResults.totalDose.ToString("F2", CultureInfo.InvariantCulture) + " кг";
 
@@ -258,6 +264,7 @@ namespace Agroculture
                 MessageBox.Show("Будь ласка, оберіть поле для розрахунку.");
             }
         }
+
 
         /// <summary>
         /// Обчислює норму добрив(кг/га) та загальну потребу(кг) для заданого елементу.
