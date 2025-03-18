@@ -18,7 +18,7 @@
       "P2O5": 0.3,
       "K2O": 0.75
     },
-    "RecomendedNextCrop": "Ячмінь"
+    "RecomendedNextCrop": "Ячмінь, Овес"
   },
   {
     "ID": 2,
@@ -39,7 +39,7 @@
       "P2O5": 0.25,
       "K2O": 0.7
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Соя, Ячмінь"
   },
   {
     "ID": 3,
@@ -60,7 +60,7 @@
       "P2O5": 0.325,
       "K2O": 0.725
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Ячмінь, Овес"
   },
   {
     "ID": 4,
@@ -81,7 +81,7 @@
       "P2O5": 0.3,
       "K2O": 0.65
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Соняшник, Пшениця озима"
   },
   {
     "ID": 5,
@@ -102,7 +102,7 @@
       "P2O5": 0.3,
       "K2O": 0.75
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Пшениця озима, Соя"
   },
   {
     "ID": 6,
@@ -123,7 +123,7 @@
       "P2O5": 0.325,
       "K2O": 0.75
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Соняшник, Кукурудза"
   },
   {
     "ID": 7,
@@ -144,7 +144,7 @@
       "P2O5": 0.35,
       "K2O": 0.85
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Соняшник, Пшениця яра"
   },
   {
     "ID": 8,
@@ -165,7 +165,7 @@
       "P2O5": 0.275,
       "K2O": 0.825
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Соняшник, Пшениця озима"
   },
   {
     "ID": 9,
@@ -186,7 +186,7 @@
       "P2O5": 0.375,
       "K2O": 0.8
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Пшениця яра, Соя"
   },
   {
     "ID": 10,
@@ -207,7 +207,7 @@
       "P2O5": 0.375,
       "K2O": 0.75
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Пшениця озима, Ячмінь"
   },
   {
     "ID": 11,
@@ -228,7 +228,7 @@
       "P2O5": 0.325,
       "K2O": 0.75
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Пшениця яра, Ячмінь, Овес"
   },
   {
     "ID": 12,
@@ -249,6 +249,6 @@
       "P2O5": 0.3,
       "K2O": 0.8
     },
-    "RecomendedNextCrop": "Соя"
+    "RecomendedNextCrop": "Пшениця озима, Жито озиме, Ячмінь"
   }
 ]

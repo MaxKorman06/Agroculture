@@ -3,6 +3,7 @@ using Agroculture.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -31,11 +32,13 @@ namespace Agroculture
         private void CurrentCropComboBox_DropDownClosed(object sender, EventArgs e)
         {
             UpdateSelectedField();
+            UpdateCropRotationIndicator();
         }
 
         private void PastCropComboBox_DropDownClosed(object sender, EventArgs e)
         {
             UpdateSelectedField();
+            UpdateCropRotationIndicator();
         }
 
         private void LoadData()
@@ -55,6 +58,53 @@ namespace Agroculture
             }
         }
 
+        private void UpdateCropRotationIndicator()
+        {
+            // Якщо поле не обране, нічого не робимо.
+            if (!(FieldsListBox.SelectedItem is Field selectedField))
+            {
+                CropRotationIndicator.Content = "";
+                return;
+            }
+
+            // Якщо попередня культура не встановлена, індикатор порожній.
+            if (selectedField.PastCrop == null)
+            {
+                CropRotationIndicator.Content = "";
+                return;
+            }
+
+            // Отримуємо поточну культуру з комбобокса
+            if (CurrentCropComboBox.SelectedItem is Crop currentCrop)
+            {
+                // Розбиваємо рекомендовані культури попередньої на список,
+                // використовуючи кому як роздільник, та обрізаємо пробіли.
+                var recommendedList = selectedField.PastCrop.RecomendedNextCrop
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => s.Trim())
+                    .ToList();
+
+                // Якщо поточна культура міститься у цьому списку (без врахування регістру)
+                if (recommendedList.Any(r => string.Equals(r, currentCrop.Name, StringComparison.OrdinalIgnoreCase)))
+                {
+                    CropRotationIndicator.Content = "+";
+                }
+                else
+                {
+                    CropRotationIndicator.Content = "";
+                }
+            }
+            else
+            {
+                CropRotationIndicator.Content = "";
+            }
+        }
+
+        private void CurrentCropComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateSelectedField();
+            UpdateCropRotationIndicator();
+        }
 
         private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
