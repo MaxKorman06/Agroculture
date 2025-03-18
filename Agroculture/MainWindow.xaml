@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Agroculture"
         mc:Ignorable="d"
-        Title="Fertilizer Calculator" Height="600" Width="1200"
+        Title="Fertilizer Calculator" Height="615" Width="1234"
         Background="#F2F2F2"
         FontFamily="Segoe UI">
     <Grid Margin="10">
@@ -35,90 +35,88 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <TextBlock Text="Деталі поля" FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,10"/>
-                    <!-- Назва поля -->
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Назва:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox x:Name="FieldNameTextBox" Grid.Column="1" Margin="5" LostFocus="FieldDetails_LostFocus"/>
-                    </Grid>
-                    <!-- Площа -->
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Площа (га):" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox x:Name="FieldAreaTextBox" Grid.Column="1" Margin="5" LostFocus="FieldDetails_LostFocus"/>
-                    </Grid>
-                    <!-- Тип ґрунту -->
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Тип ґрунту:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="SoilComboBox" Grid.Column="1" Margin="5" DisplayMemberPath="Name"
-                      SelectionChanged="SoilComboBox_SelectionChanged" LostFocus="FieldDetails_LostFocus"/>
-                    </Grid>
-                    <!-- Поживні речовини -->
-                    <TextBlock Text="Поживні речовини" FontSize="14" FontWeight="Bold" Foreground="#555" Margin="0,10,0,5"/>
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="N:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox x:Name="CurrentNTextBox" Grid.Column="1" Margin="5" LostFocus="FieldDetails_LostFocus"/>
-                    </Grid>
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="P₂O₅:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox x:Name="CurrentP2O5TextBox" Grid.Column="1" Margin="5" LostFocus="FieldDetails_LostFocus"/>
-                    </Grid>
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="K₂O:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <TextBox x:Name="CurrentK2OTextBox" Grid.Column="1" Margin="5" LostFocus="FieldDetails_LostFocus"/>
-                    </Grid>
-                    <!-- Культури -->
-                    <TextBlock Text="Культури" FontSize="14" FontWeight="Bold" Foreground="#555" Margin="0,10,0,5"/>
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Поточна культура:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="CurrentCropComboBox" Grid.Column="1" Margin="5" DisplayMemberPath="Name"
-                      SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="CurrentCropComboBox_DropDownClosed"/>
-                    </Grid>
-                    <Grid Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="Минула культура:" Grid.Column="0" VerticalAlignment="Center"/>
-                        <ComboBox x:Name="PastCropComboBox" Grid.Column="1" Margin="5" DisplayMemberPath="Name"
-                      SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="PastCropComboBox_DropDownClosed"/>
-                    </Grid>
+
+                    <GroupBox Header="Основна інформація" Margin="0,5">
+                        <StackPanel Margin="5">
+                            <!-- Назва поля -->
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Назва:" Width="140" VerticalAlignment="Center"/>
+                                <TextBox x:Name="FieldNameTextBox" Width="200" Margin="5" LostFocus="FieldDetails_LostFocus"/>
+                            </StackPanel>
+
+                            <!-- Площа -->
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Площа (га):" Width="140" VerticalAlignment="Center"/>
+                                <TextBox x:Name="FieldAreaTextBox" Width="200" Margin="5" LostFocus="FieldDetails_LostFocus"/>
+                            </StackPanel>
+
+                            <!-- Тип ґрунту -->
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Тип ґрунту:" Width="140" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="SoilComboBox" Width="200" Margin="5" DisplayMemberPath="Name"
+                                  SelectionChanged="SoilComboBox_SelectionChanged" LostFocus="FieldDetails_LostFocus"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Поживні речовини" Margin="0,5">
+                        <StackPanel Margin="5">
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="N:" Width="140" VerticalAlignment="Center"/>
+                                <TextBox x:Name="CurrentNTextBox" Width="200" Margin="5" LostFocus="FieldDetails_LostFocus"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="P₂O₅:" Width="140" VerticalAlignment="Center"/>
+                                <TextBox x:Name="CurrentP2O5TextBox" Width="200" Margin="5" LostFocus="FieldDetails_LostFocus"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="K₂O:" Width="140" VerticalAlignment="Center"/>
+                                <TextBox x:Name="CurrentK2OTextBox" Width="200" Margin="5" LostFocus="FieldDetails_LostFocus"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Культури" Margin="0,5">
+                        <StackPanel Margin="5">
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Поточна культура:" Width="140" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="CurrentCropComboBox" Width="200" Margin="5" DisplayMemberPath="Name"
+                                  SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="CurrentCropComboBox_DropDownClosed"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Минула культура:" Width="140" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="PastCropComboBox" Width="200" Margin="5" DisplayMemberPath="Name"
+                                  SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="PastCropComboBox_DropDownClosed"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
                     <!-- Рік поля -->
-                    <TextBlock x:Name="YearCounterTextBlock" Text="Рік: 0" FontWeight="Bold" Foreground="#333" Margin="10"/>
-                    <!-- Кнопки -->
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                        <Button Content="Розрахувати" Width="120" Margin="5" Click="Calculate_Click"/>
-                        <Button Content="Наступний рік" Width="120" Margin="5" Click="NextYear_Click"/>
-                    </StackPanel>
+                    <Grid Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Лічильник року -->
+                        <TextBlock x:Name="YearCounterTextBlock" Text="Рік: 0" FontWeight="Bold" Foreground="#333"
+               VerticalAlignment="Center" Margin="5" Grid.Column="0"/>
+
+                        <!-- Заповнювач для центрування -->
+                        <Grid Grid.Column="1"/>
+
+                        <!-- Кнопки -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                            <Button Content="Розрахувати" Width="120" Margin="5" Click="Calculate_Click"/>
+                            <Button Content="Наступний рік" Width="120" Margin="5" Click="NextYear_Click"/>
+                        </StackPanel>
+                    </Grid>
                 </StackPanel>
             </ScrollViewer>
         </Border>
+
 
         <!-- Права панель: Розрахунки добрив -->
         <Border Grid.Column="2" Background="White" CornerRadius="5" Padding="10" BorderBrush="#DDD" BorderThickness="1">
