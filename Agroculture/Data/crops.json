@@ -39,7 +39,7 @@
       "P2O5": 0.25,
       "K2O": 0.7
     },
-    "RecomendedNextCrop": "Соя, Ячмінь"
+    "RecomendedNextCrop": "Соя, Горох, Ячмінь"
   },
   {
     "ID": 3,
@@ -60,7 +60,7 @@
       "P2O5": 0.325,
       "K2O": 0.725
     },
-    "RecomendedNextCrop": "Ячмінь, Овес"
+    "RecomendedNextCrop": "Ячмінь, Овес, Гречка"
   },
   {
     "ID": 4,
@@ -102,7 +102,7 @@
       "P2O5": 0.3,
       "K2O": 0.75
     },
-    "RecomendedNextCrop": "Пшениця озима, Соя"
+    "RecomendedNextCrop": "Пшениця озима, Соя, Горох"
   },
   {
     "ID": 6,
@@ -186,7 +186,7 @@
       "P2O5": 0.375,
       "K2O": 0.8
     },
-    "RecomendedNextCrop": "Пшениця яра, Соя"
+    "RecomendedNextCrop": "Пшениця яра, Соя, Горох, Кукурудза"
   },
   {
     "ID": 10,
@@ -207,7 +207,7 @@
       "P2O5": 0.375,
       "K2O": 0.75
     },
-    "RecomendedNextCrop": "Пшениця озима, Ячмінь"
+    "RecomendedNextCrop": "Пшениця озима, Ячмінь, Просо"
   },
   {
     "ID": 11,
@@ -228,7 +228,7 @@
       "P2O5": 0.325,
       "K2O": 0.75
     },
-    "RecomendedNextCrop": "Пшениця яра, Ячмінь, Овес"
+    "RecomendedNextCrop": "Пшениця яра, Ячмінь, Овес, Просо"
   },
   {
     "ID": 12,
