@@ -33,13 +33,17 @@ namespace Agroculture
         {
             UpdateSelectedField();
             UpdateCropRotationIndicator();
+            UpdateRecommendedCropsList();
         }
+
 
         private void PastCropComboBox_DropDownClosed(object sender, EventArgs e)
         {
             UpdateSelectedField();
             UpdateCropRotationIndicator();
+            UpdateRecommendedCropsList();
         }
+
 
         private void LoadData()
         {
@@ -57,6 +61,24 @@ namespace Agroculture
                 FieldsListBox.SelectedIndex = 0;
             }
         }
+
+        private void UpdateRecommendedCropsList()
+        {
+            if (FieldsListBox.SelectedItem is Field selectedField && selectedField.PastCrop != null)
+            {
+                // Розбиваємо рядок рекомендованих культур на окремі елементи
+                var recommended = selectedField.PastCrop.RecomendedNextCrop
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(s => s.Trim())
+                    .ToList();
+                RecommendedCropsListBox.ItemsSource = recommended;
+            }
+            else
+            {
+                RecommendedCropsListBox.ItemsSource = null;
+            }
+        }
+
 
         private void UpdateCropRotationIndicator()
         {
@@ -104,6 +126,7 @@ namespace Agroculture
         {
             UpdateSelectedField();
             UpdateCropRotationIndicator();
+            UpdateRecommendedCropsList();
         }
 
         private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

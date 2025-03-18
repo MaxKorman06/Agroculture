@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Agroculture"
         mc:Ignorable="d"
-        Title="Fertilizer Calculator" Height="615" Width="1234"
+        Title="Fertilizer Calculator" Height="620" Width="1250"
         Background="#F2F2F2"
         FontFamily="Segoe UI">
     <Grid Margin="10">
@@ -78,21 +78,23 @@
 
                     <GroupBox Header="Культури" Margin="0,5">
                         <StackPanel Margin="5">
+                            <!-- Поточна культура з індикатором сівозміни -->
                             <StackPanel Orientation="Horizontal" Margin="0,5">
                                 <TextBlock Text="Поточна культура:" Width="140" VerticalAlignment="Center"/>
                                 <ComboBox x:Name="CurrentCropComboBox" Width="200" Margin="5" DisplayMemberPath="Name"
-                                    SelectionChanged="CurrentCropComboBox_SelectionChanged"
-                                    DropDownClosed="CurrentCropComboBox_DropDownClosed"/>
-                                <!-- Label для індикації сівозміни -->
-                                <Label x:Name="CropRotationIndicator" Content="" VerticalAlignment="Center" 
-                                    FontSize="16" FontWeight="Bold" Foreground="Green" Margin="5,0,0,0"/>
+                SelectionChanged="CurrentCropComboBox_SelectionChanged" DropDownClosed="CurrentCropComboBox_DropDownClosed"/>
+                                <Label x:Name="CropRotationIndicator" Content="" VerticalAlignment="Center" FontSize="16" FontWeight="Bold" Foreground="Green" Margin="5,0,0,0"/>
                             </StackPanel>
-
+                            <!-- Минула культура -->
                             <StackPanel Orientation="Horizontal" Margin="0,5">
                                 <TextBlock Text="Минула культура:" Width="140" VerticalAlignment="Center"/>
                                 <ComboBox x:Name="PastCropComboBox" Width="200" Margin="5" DisplayMemberPath="Name"
-                                    SelectionChanged="FieldDetails_SelectionChanged"
-                                    DropDownClosed="PastCropComboBox_DropDownClosed"/>
+                SelectionChanged="FieldDetails_SelectionChanged" DropDownClosed="PastCropComboBox_DropDownClosed"/>
+                            </StackPanel>
+                            <!-- Рекомендовані культури для сівозміни -->
+                            <StackPanel Margin="0,5">
+                                <TextBlock Text="Рекомендовані культури для сівозміни:" FontWeight="Bold" Foreground="#555" Margin="0,5"/>
+                                <ListBox x:Name="RecommendedCropsListBox" Height="80"/>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
