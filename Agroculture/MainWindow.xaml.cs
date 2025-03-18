@@ -338,19 +338,6 @@ namespace Agroculture
             }
         }
 
-
-        /// <summary>
-        /// Обчислює норму добрив(кг/га) та загальну потребу(кг) для заданого елементу.
-        /// </summary>
-        /// <param name = "plannedYield" > Запланована врожайність(ц/га)</param>
-        /// <param name = "nutrientUptake" > Питомий винос елементу живлення(кг/ц)</param>
-        /// <param name = "defaultContent" > Дефолтний вміст елементу в ґрунті(мг/100г)</param>
-        /// <param name = "bulkDensity" > Об'ємна маса ґрунту (г/см³)</param>
-        /// <param name = "h" > Глибина розрахункового шару(см)</param>
-        /// <param name = "soilUtilization" > Коефіцієнт використання з ґрунту</param>
-        /// <param name = "fertilizerUtilization" > Коефіцієнт використання з добрив</param>
-        /// <param name = "area" > Площа поля(га)</param>
-        /// <returns>Кортеж з dosePerHa(кг/га) і totalDose(кг)</returns>
         private (double dosePerHa, double totalDose) CalculateDose(
         double plannedYield,
         double nutrientUptake,
@@ -368,16 +355,6 @@ namespace Agroculture
             return (dosePerHa, totalDose);
         }
 
-        //private void Calculate_Click(object sender, RoutedEventArgs e)
-        //{
-        //    MessageBox.Show("Розрахунок виконано (демонстраційний варіант)");
-        //}
-
-        /// <summary>
-        /// Оновлює властивості вибраного поля з даних форми, перевіряє валідність введених чисел,
-        /// встановлює прапорець фіксації типу ґрунту, якщо поживні значення відрізняються від дефолтних,
-        /// та зберігає зміни у відповідний файл saves/field_{ID}.json.
-        /// </summary>
         private void UpdateSelectedField()
         {
             if (FieldsListBox.SelectedItem is Field selectedField)
@@ -480,27 +457,16 @@ namespace Agroculture
             }
         }
 
-
-
-        /// <summary>
-        /// Подія для LostFocus у текстових полях.
-        /// </summary>
         private void FieldDetails_LostFocus(object sender, RoutedEventArgs e)
         {
             UpdateSelectedField();
         }
 
-        /// <summary>
-        /// Подія для SelectionChanged у ComboBox‑ах.
-        /// </summary>
         private void FieldDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateSelectedField();
         }
 
-        /// <summary>
-        /// Оновлює прив'язку списку полів (для відображення змін).
-        /// </summary>
         private void RefreshFieldsList()
         {
             var selectedField = FieldsListBox.SelectedItem as Field;
