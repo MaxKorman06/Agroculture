@@ -1,4 +1,5 @@
-﻿using Agroculture.Models;
+﻿using Agroculture.Helpers;
+using Agroculture.Models;
 using Agroculture.Services;
 using System;
 using System.Collections.Generic;
@@ -32,16 +33,32 @@ namespace Agroculture
         private void CurrentCropComboBox_DropDownClosed(object sender, EventArgs e)
         {
             UpdateSelectedField();
-            UpdateCropRotationIndicator();
-            UpdateRecommendedCropsList();
+
+            // Виклик з FieldUIHelper
+            FieldUIHelper.UpdateCropRotationIndicator(
+                FieldsListBox.SelectedItem as Field,
+                CropRotationIndicator,
+                CurrentCropComboBox);
+
+            FieldUIHelper.UpdateRecommendedCropsList(
+                FieldsListBox.SelectedItem as Field,
+                RecommendedCropsListBox);
         }
 
 
         private void PastCropComboBox_DropDownClosed(object sender, EventArgs e)
         {
             UpdateSelectedField();
-            UpdateCropRotationIndicator();
-            UpdateRecommendedCropsList();
+
+            // Виклик з FieldUIHelper
+            FieldUIHelper.UpdateCropRotationIndicator(
+                FieldsListBox.SelectedItem as Field,
+                CropRotationIndicator,
+                CurrentCropComboBox);
+
+            FieldUIHelper.UpdateRecommendedCropsList(
+                FieldsListBox.SelectedItem as Field,
+                RecommendedCropsListBox);
         }
 
 
@@ -62,71 +79,19 @@ namespace Agroculture
             }
         }
 
-        private void UpdateRecommendedCropsList()
-        {
-            if (FieldsListBox.SelectedItem is Field selectedField && selectedField.PastCrop != null)
-            {
-                // Розбиваємо рядок рекомендованих культур на окремі елементи
-                var recommended = selectedField.PastCrop.RecomendedNextCrop
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(s => s.Trim())
-                    .ToList();
-                RecommendedCropsListBox.ItemsSource = recommended;
-            }
-            else
-            {
-                RecommendedCropsListBox.ItemsSource = null;
-            }
-        }
-
-
-        private void UpdateCropRotationIndicator()
-        {
-            // Якщо поле не обране, нічого не робимо.
-            if (!(FieldsListBox.SelectedItem is Field selectedField))
-            {
-                CropRotationIndicator.Content = "";
-                return;
-            }
-
-            // Якщо попередня культура не встановлена, індикатор порожній.
-            if (selectedField.PastCrop == null)
-            {
-                CropRotationIndicator.Content = "";
-                return;
-            }
-
-            // Отримуємо поточну культуру з комбобокса
-            if (CurrentCropComboBox.SelectedItem is Crop currentCrop)
-            {
-                // Розбиваємо рекомендовані культури попередньої на список,
-                // використовуючи кому як роздільник, та обрізаємо пробіли.
-                var recommendedList = selectedField.PastCrop.RecomendedNextCrop
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(s => s.Trim())
-                    .ToList();
-
-                // Якщо поточна культура міститься у цьому списку (без врахування регістру)
-                if (recommendedList.Any(r => string.Equals(r, currentCrop.Name, StringComparison.OrdinalIgnoreCase)))
-                {
-                    CropRotationIndicator.Content = "✔";
-                }
-                else
-                {
-                    CropRotationIndicator.Content = "";
-                }
-            }
-            else
-            {
-                CropRotationIndicator.Content = "";
-            }
-        }
-
         private void CurrentCropComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateSelectedField();
-            UpdateCropRotationIndicator();
-            UpdateRecommendedCropsList();
+
+            // Виклик з FieldUIHelper
+            FieldUIHelper.UpdateCropRotationIndicator(
+                FieldsListBox.SelectedItem as Field,
+                CropRotationIndicator,
+                CurrentCropComboBox);
+
+            FieldUIHelper.UpdateRecommendedCropsList(
+                FieldsListBox.SelectedItem as Field,
+                RecommendedCropsListBox);
         }
 
         private void SoilComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -266,22 +231,19 @@ namespace Agroculture
 
                 try
                 {
-                    // Глибина розрахункового шару (см)
                     double h = 20.0;
-                    // Площа поля (га)
                     double area = selectedField.Area;
 
-                    // Отримання планової врожайності:
-                    // Якщо PlannedYieldTextBox містить значення > 0, використовується воно,
-                    // інакше використовується стандартне значення з об'єкта Crop.
-                    double plannedYield;
-                    if (!double.TryParse(PlannedYieldTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out plannedYield) || plannedYield <= 0)
+                    // Якщо користувач не ввів планову врожайність або ввів ≤ 0, 
+                    // використовуємо PlannedYield з Crop
+                    if (!double.TryParse(PlannedYieldTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double plannedYield)
+                        || plannedYield <= 0)
                     {
                         plannedYield = selectedField.CurrentCrop.PlannedYield;
                     }
 
-                    // Розрахунок для азоту (N)
-                    var nResults = CalculateDose(
+                    // Тепер викликаємо метод із CalculationHelper
+                    var nResults = CalculationHelper.CalculateDose(
                         plannedYield,
                         selectedField.CurrentCrop.NutrientUptake.N,
                         selectedField.SelectedSoil.DefaultN,
@@ -292,8 +254,7 @@ namespace Agroculture
                         area
                     );
 
-                    // Розрахунок для фосфору (P₂O₅)
-                    var pResults = CalculateDose(
+                    var pResults = CalculationHelper.CalculateDose(
                         plannedYield,
                         selectedField.CurrentCrop.NutrientUptake.P2O5,
                         selectedField.SelectedSoil.DefaultP2O5,
@@ -304,8 +265,7 @@ namespace Agroculture
                         area
                     );
 
-                    // Розрахунок для калію (K₂O)
-                    var kResults = CalculateDose(
+                    var kResults = CalculationHelper.CalculateDose(
                         plannedYield,
                         selectedField.CurrentCrop.NutrientUptake.K2O,
                         selectedField.SelectedSoil.DefaultK2O,
@@ -338,21 +298,19 @@ namespace Agroculture
             }
         }
 
-        private (double dosePerHa, double totalDose) CalculateDose(
-        double plannedYield,
-        double nutrientUptake,
-        double defaultContent,
-        double bulkDensity,
-        double h,
-        double soilUtilization,
-        double fertilizerUtilization,
-        double area)
+        private double ValidateAndGetValue(TextBox textBox)
         {
-            double dosePerHa = (plannedYield * nutrientUptake - ((defaultContent/10) * bulkDensity * h) * soilUtilization) / fertilizerUtilization;
-            if (dosePerHa < 0)
-                dosePerHa = 0;
-            double totalDose = dosePerHa * area;
-            return (dosePerHa, totalDose);
+            if (double.TryParse(textBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double value))
+            {
+                if (value < 0.01)
+                    value = 0.01;
+                else if (value > 1000)
+                    value = 1000;
+
+                textBox.Text = value.ToString(CultureInfo.InvariantCulture);
+                return value;
+            }
+            return 0;
         }
 
         private void UpdateSelectedField()
@@ -382,47 +340,9 @@ namespace Agroculture
                 selectedField.SelectedSoil = SoilComboBox.SelectedItem as Soil;
 
                 // Обробка та коригування значень поживних речовин
-                if (double.TryParse(CurrentNTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double n))
-                {
-                    if (n < 0.01)
-                    {
-                        n = 0.01;
-                    }
-                    else if (n > 1000)
-                    {
-                        n = 1000;
-                    }
-                    selectedField.CurrentN = n;
-                    CurrentNTextBox.Text = n.ToString(CultureInfo.InvariantCulture);
-                }
-
-                if (double.TryParse(CurrentP2O5TextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double p))
-                {
-                    if (p < 0.01)
-                    {
-                        p = 0.01;
-                    }
-                    else if (p > 1000)
-                    {
-                        p = 1000;
-                    }
-                    selectedField.CurrentP2O5 = p;
-                    CurrentP2O5TextBox.Text = p.ToString(CultureInfo.InvariantCulture);
-                }
-
-                if (double.TryParse(CurrentK2OTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double k))
-                {
-                    if (k < 0.01)
-                    {
-                        k = 0.01;
-                    }
-                    else if (k > 1000)
-                    {
-                        k = 1000;
-                    }
-                    selectedField.CurrentK2O = k;
-                    CurrentK2OTextBox.Text = k.ToString(CultureInfo.InvariantCulture);
-                }
+                selectedField.CurrentN = ValidateAndGetValue(CurrentNTextBox);
+                selectedField.CurrentP2O5 = ValidateAndGetValue(CurrentP2O5TextBox);
+                selectedField.CurrentK2O = ValidateAndGetValue(CurrentK2OTextBox);
 
                 // Оновлюємо поточну культуру, якщо обрано
                 if (CurrentCropComboBox.SelectedItem != null)
