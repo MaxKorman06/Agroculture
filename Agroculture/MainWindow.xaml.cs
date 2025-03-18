@@ -87,7 +87,7 @@ namespace Agroculture
                 // Якщо поточна культура міститься у цьому списку (без врахування регістру)
                 if (recommendedList.Any(r => string.Equals(r, currentCrop.Name, StringComparison.OrdinalIgnoreCase)))
                 {
-                    CropRotationIndicator.Content = "+";
+                    CropRotationIndicator.Content = "✔";
                 }
                 else
                 {
