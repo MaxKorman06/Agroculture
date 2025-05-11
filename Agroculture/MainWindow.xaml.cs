@@ -15,7 +15,7 @@ namespace Agroculture
         private List<Field> fields;
         private List<Soil> soils;
         private List<Crop> crops;
-        private JsonDataService dataService;
+        private LiteDbDataService dataService;
 
         // Шляхи до файлів JSON (розміщені в папці Data)
         private string soilsFilePath = "Data/soils.json";
@@ -26,7 +26,7 @@ namespace Agroculture
         public MainWindow()
         {
             InitializeComponent();
-            dataService = new JsonDataService(soilsFilePath, cropsFilePath, fieldsFilePath);
+            dataService = new LiteDbDataService();
             LoadData();
         }
 
@@ -61,12 +61,37 @@ namespace Agroculture
                 RecommendedCropsListBox);
         }
 
+        // Метод для міграції даних з JSON у LiteDB
+        // Якщо дані вже є в LiteDB, то нічого не робимо
+        private void MigrateJsonToLiteDb()
+        {
+            // перевірити, чи в колекції є записи
+            if (!dataService.LoadSoils().Any())
+            {
+                var soils = new JsonDataService(soilsFilePath, cropsFilePath, fieldsFilePath).LoadSoils();
+                dataService.SaveSoils(soils);
+            }
+            if (!dataService.LoadCrops().Any())
+            {
+                var crops = new JsonDataService(soilsFilePath, cropsFilePath, fieldsFilePath).LoadCrops();
+                dataService.SaveCrops(crops);
+            }
+            if (!dataService.LoadFields().Any())
+            {
+                var fields = new JsonDataService(soilsFilePath, cropsFilePath, fieldsFilePath).LoadFields();
+                foreach (var f in fields)
+                    dataService.SaveField(f);
+            }
+        }
+
 
         private void LoadData()
         {
+            // Перевіряємо, чи є дані в LiteDB, якщо ні - мігруємо з JSON
+            //MigrateJsonToLiteDb();
             soils = dataService.LoadSoils();
             crops = dataService.LoadCrops();
-            fields = dataService.LoadFields(); // Завантаження збережених значень
+            fields = dataService.LoadFields();
 
             SoilComboBox.ItemsSource = soils;
             CurrentCropComboBox.ItemsSource = crops;

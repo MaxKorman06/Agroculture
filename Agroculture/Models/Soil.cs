@@ -1,5 +1,8 @@
-﻿namespace Agroculture.Models
+﻿using LiteDB;
+
+namespace Agroculture.Models
 {
+    [BsonId]
     public class Soil
     {
         public int ID { get; set; }
