@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Agroculture.Helpers
+﻿namespace Agroculture.Helpers
 {
     public static class CalculationHelper
     {
