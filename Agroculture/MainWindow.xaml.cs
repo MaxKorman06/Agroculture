@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.IO;
 
 namespace Agroculture
 {
@@ -15,7 +16,7 @@ namespace Agroculture
         private List<Field> fields;
         private List<Soil> soils;
         private List<Crop> crops;
-        private JsonDataService dataService;
+        private LiteDbDataService dataService;
 
         // Шляхи до файлів JSON (розміщені в папці Data)
         private string soilsFilePath = "Data/soils.json";
@@ -26,7 +27,8 @@ namespace Agroculture
         public MainWindow()
         {
             InitializeComponent();
-            dataService = new JsonDataService(soilsFilePath, cropsFilePath, fieldsFilePath);
+            dataService = new LiteDbDataService();
+            MigrateJsonToLiteDb();
             LoadData();
         }
 
@@ -61,12 +63,59 @@ namespace Agroculture
                 RecommendedCropsListBox);
         }
 
+        // Метод для міграції даних з JSON у LiteDB
+        // Якщо дані вже є в LiteDB, то нічого не робимо
+        private void MigrateJsonToLiteDb()
+        {
+            try
+            {
+                // Шлях до Data
+                var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                var dataDir = Path.Combine(baseDir, "Data");
+
+                // Перевіряємо, що JSON-файли існують
+                var soilsFile = Path.Combine(dataDir, "soils.json");
+                var cropsFile = Path.Combine(dataDir, "crops.json");
+                var fieldsFile = Path.Combine(dataDir, "fields.json");
+                if (!File.Exists(soilsFile) || !File.Exists(cropsFile) || !File.Exists(fieldsFile))
+                    return; // немає чого мігрувати
+
+                // Міграція тільки якщо колекції порожні
+                if (!dataService.LoadSoils().Any())
+                {
+                    var jsonService = new JsonDataService(soilsFile, cropsFile, fieldsFile);
+                    var soils = jsonService.LoadSoils();
+                    dataService.SaveSoils(soils);
+                }
+                if (!dataService.LoadCrops().Any())
+                {
+                    var jsonService = new JsonDataService(soilsFile, cropsFile, fieldsFile);
+                    var crops = jsonService.LoadCrops();
+                    dataService.SaveCrops(crops);
+                }
+                if (!dataService.LoadFields().Any())
+                {
+                    var jsonService = new JsonDataService(soilsFile, cropsFile, fieldsFile);
+                    var fields = jsonService.LoadFields();
+                    foreach (var f in fields) dataService.SaveField(f);
+                }
+            }
+            catch (Exception ex)
+            {
+                // для діагностики логніть або показуйте повідомлення
+                MessageBox.Show("Помилка міграції JSON→LiteDB: " + ex.Message);
+            }
+        }
+
+
 
         private void LoadData()
         {
+            // Перевіряємо, чи є дані в LiteDB, якщо ні - мігруємо з JSON
+            //MigrateJsonToLiteDb();
             soils = dataService.LoadSoils();
             crops = dataService.LoadCrops();
-            fields = dataService.LoadFields(); // Завантаження збережених значень
+            fields = dataService.LoadFields();
 
             SoilComboBox.ItemsSource = soils;
             CurrentCropComboBox.ItemsSource = crops;
