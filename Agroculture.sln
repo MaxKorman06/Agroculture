@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agroculture", "Agroculture\Agroculture.csproj", "{03B93023-57BB-4D75-AC78-9463F88B464C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agroculture.Tests", "Agroculture.Tests\Agroculture.Tests.csproj", "{EC6A2B6A-D5AF-490A-BF90-FFB5A8331122}"
+	ProjectSection(ProjectDependencies) = postProject
+		{03B93023-57BB-4D75-AC78-9463F88B464C} = {03B93023-57BB-4D75-AC78-9463F88B464C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{03B93023-57BB-4D75-AC78-9463F88B464C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03B93023-57BB-4D75-AC78-9463F88B464C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03B93023-57BB-4D75-AC78-9463F88B464C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC6A2B6A-D5AF-490A-BF90-FFB5A8331122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC6A2B6A-D5AF-490A-BF90-FFB5A8331122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC6A2B6A-D5AF-490A-BF90-FFB5A8331122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC6A2B6A-D5AF-490A-BF90-FFB5A8331122}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
